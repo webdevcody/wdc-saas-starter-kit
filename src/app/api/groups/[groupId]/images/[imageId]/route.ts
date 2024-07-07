@@ -15,7 +15,7 @@ export const GET = async (
 
     const url =
       params.imageId === "default"
-        ? `${env.NEXTAUTH_URL}/group.jpeg`
+        ? `${env.HOST_NAME}/group.jpeg`
         : await getGroupImageUrlUseCase(user, {
             imageId: params.imageId,
             groupId,

@@ -7,7 +7,6 @@ export const env = createEnv({
     NODE_ENV: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
-    NEXTAUTH_SECRET: z.string().min(1),
     STRIPE_API_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
     HOST_NAME: z.string().min(1),
@@ -23,7 +22,6 @@ export const env = createEnv({
     CLOUDFLARE_SECRET_ACCESS_KEY: z.string().min(1),
     CLOUDFLARE_BUCKET_NAME: z.string().min(1),
     RESEND_AUDIENCE_ID: z.string().min(1),
-    NEXTAUTH_URL: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_STRIPE_KEY: z.string().min(1),
@@ -34,12 +32,10 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_MANAGE_URL: z.string().min(1),
   },
   runtimeEnv: {
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     NEXT_PUBLIC_PRICE_ID_BASIC: process.env.NEXT_PUBLIC_PRICE_ID_BASIC,

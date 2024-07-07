@@ -1,24 +1,20 @@
 Notice! this starter kit isn't fully finished, but I'm just making this public for now if anyone wants to add onto it. I'm getting burned out on working on this so I'm open to anyone wanting to help contribute to fixing up any bugs they find, etc.
 
-# Welcome to the Project Planner AI Next Starter Kit
+# Welcome to the Starter Kit
 
-Welcome to the [Project Planner AI](https://projectplannerai.com) Next Starter Kit! This is a github template which contains the following technology we feel is a great starting point for any new SaaS product:
+Welcome to the WDC Next.js Starter Kit! This is a github template which contains the following technology we feel is a great starting point for any new SaaS product:
 
-- Authentication (Next-Auth)
+- Authentication (Lucia)
 - Authorization
 - Subscription Management (Stripe)
 - Stripe Integration / Webhooks
-- Todo Management
+- Group Management
+- File Upload to R2
 - Drizzle ORM
 - Light / Dark Mode
 - ShadCN
 - Tailwind CSS
-- Account Management
-- Changelog
-- Analytics
-- Feedback
-
-We kept this project pretty simple but with enough functionality to allow you to start adding on new features as needed.
+- Posthog Analytics
 
 ## Contributing
 
@@ -36,12 +32,13 @@ This starter kit does uses Docker and Docker Compose to run a postgres database,
 
 1. `cp .env.sample .env`
 2. `npm i`
-3. `npm run dev`
+3. `docker compose up`
 4. `npm run db:push`
+5. `npm run dev`
 
 ## Env Setup
 
-This starter kit depends on a few external services, such as **google oauth**, **stripe**, **turso**, and **resend**. You'll need to following the steps below and make sure everything is setup and copy the necesssary values into your .env file:
+This starter kit depends on a few external services, such as **google oauth**, **stripe**, and **resend**. You'll need to following the steps below and make sure everything is setup and copy the necesssary values into your .env file:
 
 ## Resend
 
@@ -49,11 +46,15 @@ Create an account on https://resend.com/ and generate an api key and paste into 
 
 Setup your domain in resend so that you can send emails from your custom domain and set **EMAIL_FROM** to match your expected from line. To do this, go to your domain provider and add the necessary records outlined in resend.
 
-### Database
+## Cloudflare R2
 
-This starter kit uses Turso which is a sqlite host with a generous free tier. You'll need to setup an account here https://turso.tech/ and create a database. After making the database, generate a token and put into **DATABASE_AUTH_TOKEN**. Additionally, find your database url and set **DATABASE_URL**.
+TODO: add info about bucket and keys
 
-### Stripe Setup
+## Database
+
+This starter kit uses postgres. Supabase provides 2 free postgres database. Setup a database and get your **DATABASE_URL**.
+
+## Stripe Setup
 
 This starter kit uses stripe which means you'll need to setup a stripe account at https://stripe.com. After creating an account and a project, you'll need to set the following env variables:
 
@@ -65,21 +66,21 @@ This starter kit uses stripe which means you'll need to setup a stripe account a
 
 How you can find these are outlined below:
 
-#### Stripe Keys
+### Stripe Keys
 
 You need to define both **NEXT_PUBLIC_STRIPE_KEY** and **STRIPE_API_KEY** inside of .env. These can get found here:
 
 - https://dashboard.stripe.com/test/apikeys
 
-#### Webhook Keys
+### Webhook Keys
 
 Depending on if you are developing locally or deploying to prod, there are two paths you need to take for getting a webhook key:
 
-##### Local Development
+### Local Development
 
 We provided an npm alias `stripe:listen` you can run if you want to setup your locally running application to listsen for any stripe events. Run this command and copy the webhook secret it prints to the console into your .env file.
 
-##### Production
+### Production
 
 When going to production, you'll need to create a webhook endpoint and copy your webhook secret into _STRIPE_WEBHOOK_SECRET_:
 
@@ -88,7 +89,7 @@ When going to production, you'll need to create a webhook endpoint and copy your
 3. listen for events invoice.payment_succeeded and checkout.session.completed
 4. find your stripe secret key and copy into your projects
 
-#### Price Id (Product)
+### Price Id (Product)
 
 You'll need to create a subscription product in stripe:
 
@@ -97,15 +98,15 @@ You'll need to create a subscription product in stripe:
 3. Copy the price id
 4. paste price id into .env of **PRICE_ID**
 
-### HOST_NAME
+## HOST_NAME
 
 When deplying to production, you want to set HOST_NAME to your FQDN, such as `https://you-domain.com`
 
-### Next-Auth
+## Auth Setup
 
-We use [Next-Auth](https://next-auth.js.org/) for our authentication library. In order to get this start kit setup correctly, you need to setup a google provider.
+TODO: link to lucia auth, talk about it
 
-#### Google Provider
+### Google Provider
 
 By default, this starter only comes with the google provider which you'll need to setup:
 
@@ -128,4 +129,8 @@ By default, this starter only comes with the google provider which you'll need t
 - **GOOGLE_CLIENT_ID**
 - **GOOGLE_CLIENT_SECRET**
 
-8. run `openssl rand -base64 32` and set **NEXTAUTH_SECRET** (this is used for signing the jwt)
+### Github provider
+
+TODO: add info
+
+## Posthog
