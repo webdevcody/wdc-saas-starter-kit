@@ -85,7 +85,8 @@ export const subscriptions = pgTable("gf_subscriptions", {
   id: serial("id").primaryKey(),
   userId: serial("userId")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => users.id, { onDelete: "cascade" })
+    .unique(),
   stripeSubscriptionId: text("stripeSubscriptionId").notNull(),
   stripeCustomerId: text("stripeCustomerId").notNull(),
   stripePriceId: text("stripePriceId").notNull(),

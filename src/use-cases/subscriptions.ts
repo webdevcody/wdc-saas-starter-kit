@@ -1,5 +1,5 @@
 import {
-  addSubscription,
+  createSubscription,
   getSubscription,
   updateSubscription,
 } from "@/data-access/subscriptions";
@@ -18,14 +18,14 @@ export async function getUserPlanUseCase(userId: UserId): Promise<Plan> {
   }
 }
 
-export async function addSubscriptionUseCase(subscription: {
+export async function createSubscriptionUseCase(subscription: {
   userId: UserId;
   stripeSubscriptionId: string;
   stripeCustomerId: string;
   stripePriceId: string;
   stripeCurrentPeriodEnd: Date;
 }) {
-  await addSubscription(subscription);
+  await createSubscription(subscription);
 }
 
 export async function updateSubscriptionUseCase(subscription: {

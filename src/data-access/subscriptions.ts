@@ -3,7 +3,7 @@ import { subscriptions } from "@/db/schema";
 import { UserId } from "@/use-cases/types";
 import { eq } from "drizzle-orm";
 
-export async function addSubscription(subscription: {
+export async function createSubscription(subscription: {
   userId: UserId;
   stripeSubscriptionId: string;
   stripeCustomerId: string;

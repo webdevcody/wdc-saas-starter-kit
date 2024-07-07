@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
 import type Stripe from "stripe";
 import {
-  addSubscriptionUseCase,
+  createSubscriptionUseCase,
   updateSubscriptionUseCase,
 } from "@/use-cases/subscriptions";
 
@@ -34,16 +34,20 @@ export async function POST(req: Request) {
       session.subscription as string
     );
 
-    await addSubscriptionUseCase({
+    await createSubscriptionUseCase({
       userId: parseInt(session.metadata!.userId),
       stripeSubscriptionId: subscription.id,
       stripeCustomerId: subscription.customer as string,
       stripePriceId: subscription.items.data[0]?.price.id,
       stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
     });
-  } else if (event.type === "customer.subscription.created") {
+  } else if (
+    ["customer.subscription.created", "customer.subscription.updated"].includes(
+      event.type
+    )
+  ) {
     const subscription = event.data.object as Stripe.Subscription;
-
+    // if this fails due to race conditions where checkout.session.completed was not fired first, stripe will retry
     await updateSubscriptionUseCase({
       stripePriceId: subscription.items.data[0]?.price.id,
       stripeSubscriptionId: subscription.id,
