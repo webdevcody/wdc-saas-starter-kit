@@ -1,3 +1,5 @@
+Notice! this starter kit isn't fully finished, but I'm just making this public for now if anyone wants to add onto it. I'm getting burned out on working on this so I'm open to anyone wanting to help contribute to fixing up any bugs they find, etc.
+
 # Welcome to the Project Planner AI Next Starter Kit
 
 Welcome to the [Project Planner AI](https://projectplannerai.com) Next Starter Kit! This is a github template which contains the following technology we feel is a great starting point for any new SaaS product:
