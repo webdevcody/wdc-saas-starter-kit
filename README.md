@@ -33,7 +33,7 @@ This starter kit does uses Docker and Docker Compose to run a postgres database,
 1. `cp .env.sample .env`
 2. `npm i`
 3. `docker compose up`
-4. `npm run db:push`
+4. `npm run db:migrate`
 5. `npm run dev`
 
 ## Env Setup
