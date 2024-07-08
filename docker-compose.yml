@@ -1,9 +1,9 @@
 version: "3.9"
 services:
-  group-finder-db:
+  wdc-saas-starter-kit:
     image: postgres
     restart: always
-    container_name: group-finder-db
+    container_name: wdc-saas-starter-kit
     ports:
       - 5432:5432
     environment:
