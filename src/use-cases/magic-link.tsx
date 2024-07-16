@@ -4,6 +4,7 @@ import {
   getMagicLinkByToken,
   upsertMagicLink,
 } from "@/data-access/magic-links";
+import { createProfile } from "@/data-access/profiles";
 import {
   createMagicUser,
   getUserByEmail,
@@ -11,6 +12,7 @@ import {
 } from "@/data-access/users";
 import { MagicLinkEmail } from "@/emails/magic-link";
 import { sendEmail } from "@/lib/send-email";
+import { animals, colors, uniqueNamesGenerator } from "unique-names-generator";
 
 export async function sendMagicLinkUseCase(email: string) {
   const token = await upsertMagicLink(email);
@@ -41,6 +43,12 @@ export async function loginWithMagicLinkUseCase(token: string) {
     return existingUser;
   } else {
     const newUser = await createMagicUser(magicLinkInfo.email);
+    const displayName = uniqueNamesGenerator({
+      dictionaries: [colors, animals],
+      separator: " ",
+      style: "capital",
+    });
+    await createProfile(newUser.id, displayName);
     await deleteMagicToken(token);
     return newUser;
   }

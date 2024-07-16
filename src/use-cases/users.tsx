@@ -78,13 +78,11 @@ export async function registerUserUseCase(email: string, password: string) {
   const user = await createUser(email);
   await createAccount(user.id, password);
 
-  const config: Config = {
+  const displayName = uniqueNamesGenerator({
     dictionaries: [colors, animals],
     separator: " ",
     style: "capital",
-  };
-
-  const displayName = uniqueNamesGenerator(config);
+  });
   await createProfile(user.id, displayName);
 
   const token = await createVerifyEmailToken(user.id);
