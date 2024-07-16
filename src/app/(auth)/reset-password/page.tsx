@@ -22,7 +22,6 @@ import { Button } from "@/components/ui/button";
 import { changePasswordAction } from "./actions";
 import { LoaderButton } from "@/components/loader-button";
 import { useServerAction } from "zsa-react";
-import { useState } from "react";
 
 const registrationSchema = z
   .object({
@@ -40,8 +39,6 @@ export default function ResetPasswordPage({
 }: {
   searchParams: { token: string };
 }) {
-  const [isSuccess, setIsSuccess] = useState(false);
-
   const form = useForm<z.infer<typeof registrationSchema>>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -51,11 +48,8 @@ export default function ResetPasswordPage({
     },
   });
 
-  const { execute, isPending, error } = useServerAction(changePasswordAction, {
-    onSuccess() {
-      setIsSuccess(true);
-    },
-  });
+  const { execute, isPending, isSuccess, error } =
+    useServerAction(changePasswordAction);
 
   function onSubmit(values: z.infer<typeof registrationSchema>) {
     execute({
