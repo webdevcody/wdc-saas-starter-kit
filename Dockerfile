@@ -63,4 +63,4 @@ ENV PORT=3000
 
 ARG HOSTNAME
 
-CMD node server.js
+CMD npm run db:migrate && node server.js

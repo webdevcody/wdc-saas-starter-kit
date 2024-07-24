@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "db:migrate && next start",
+    "start": "next start",
     "lint": "next lint",
     "stripe:listen": "stripe listen --forward-to http://localhost:3000/api/webhooks/stripe",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
