@@ -6,6 +6,9 @@ const withMDX = createNextDocsMDX();
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  experimental: {
+    serverComponentsExternalPackages: ["@aws-sdk/s3-request-presigner"],
+  },
   images: {
     remotePatterns: [
       {
@@ -25,7 +28,7 @@ const nextConfig = {
         hostname: "avatars.githubusercontent.com",
         port: "",
         pathname: "**",
-      }
+      },
     ],
   },
 };
