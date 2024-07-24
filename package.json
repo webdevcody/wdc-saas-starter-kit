@@ -14,7 +14,7 @@
     "db:studio": "drizzle-kit studio",
     "db:clear": "tsx ./src/db/clear.ts",
     "db:seed": "tsx ./src/db/seed.ts",
-    "db:reset": "pnpm run db:clear && pnpm run db:migrate && pnpm run db:seed"
+    "db:reset": "npm run db:clear && npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "1.1.0",

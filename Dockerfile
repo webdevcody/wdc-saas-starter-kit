@@ -37,7 +37,6 @@ ARG NEXT_PUBLIC_POSTHOG_KEY
 ARG NEXT_PUBLIC_POSTHOG_HOST
 
 RUN npm run build
-RUN npm run db:migrate
 
 FROM base AS runner
 WORKDIR /app
@@ -55,8 +54,12 @@ RUN chown nextjs:nodejs .next
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
 
 USER nextjs
+
+RUN cd drizzle && npm i
 
 EXPOSE 3000
 
@@ -64,7 +67,4 @@ ENV PORT=3000
 
 ARG HOSTNAME
 
-# this is gross
-RUN npm i drizzle-orm postgres @t3-oss/env-nextjs zod
-
-CMD npm run db:migrate && node server.js
+CMD ./run.sh
