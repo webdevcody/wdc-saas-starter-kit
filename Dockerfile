@@ -57,9 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
 
-USER nextjs
+RUN cd drizzle/migrate && npm i
 
-RUN cd drizzle && npm i
+USER nextjs
 
 EXPOSE 3000
 
