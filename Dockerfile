@@ -60,6 +60,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/run.sh ./run.sh
 
 RUN cd drizzle/migrate && npm i
 
+WORKDIR /app
+
 USER nextjs
 
 EXPOSE 3000
