@@ -1,13 +1,11 @@
 import { database } from "@/db";
-import { User, accounts, magicLinks, users } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { User, accounts, users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import crypto from "crypto";
-import { generateRandomToken } from "@/data-access/utils";
 import { UserId } from "@/use-cases/types";
 import { getAccountByUserId } from "@/data-access/accounts";
 
 const ITERATIONS = 10000;
-const MAGIC_LINK_TOKEN_TTL = 1000 * 60 * 5; // 5 min
 
 export async function deleteUser(userId: UserId) {
   await database.delete(users).where(eq(users.id, userId));
