@@ -13,6 +13,6 @@ export const subscribeEmailAction = unauthenticatedAction
     })
   )
   .handler(async ({ input: { email } }) => {
-    await rateLimitByIp("newsletter", 1);
+    await rateLimitByIp({ key: "newsletter" });
     await subscribeEmailUseCase(email);
   });

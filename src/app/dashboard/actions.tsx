@@ -11,7 +11,9 @@ export const createGroupAction = authenticatedAction
   .createServerAction()
   .input(schema)
   .handler(async ({ input: { name, description }, ctx: { user } }) => {
-    await rateLimitByKey(`${user.id}-create-group`, 1, 10000).catch(toZSAError);
+    await rateLimitByKey({
+      key: `${user.id}-create-group`,
+    }).catch(toZSAError);
     await createGroupUseCase(user, {
       name,
       description,

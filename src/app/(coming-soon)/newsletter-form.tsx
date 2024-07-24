@@ -71,7 +71,7 @@ export function NewsletterForm() {
           <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
             <AlertTitle>Something went wrong</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{error.message}</AlertDescription>
           </Alert>
         )}
       </div>

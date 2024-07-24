@@ -26,7 +26,7 @@ export function DeleteModal({
   setIsOpen: (open: boolean) => void;
   title: string;
   confirmText?: string;
-  isPending?: boolean;
+  isPending: boolean;
 }) {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>

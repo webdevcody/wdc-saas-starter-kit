@@ -19,7 +19,11 @@ export const updateProfileImageAction = authenticatedAction
     })
   )
   .handler(async ({ input, ctx }) => {
-    await rateLimitByKey(`update-profile-image-${ctx.user.id}`, 3, 60000);
+    await rateLimitByKey({
+      key: `update-profile-image-${ctx.user.id}`,
+      limit: 3,
+      window: 60000,
+    });
     const file = input.fileWrapper.get("file") as File;
     await updateProfileImageUseCase(file, ctx.user.id);
     revalidatePath(`/dashboard/settings/profile`);

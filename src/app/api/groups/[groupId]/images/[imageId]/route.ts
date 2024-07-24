@@ -1,4 +1,4 @@
-import { streamImageFromUrl } from "@/app/api/users/[userId]/images/[imageId]/route";
+import { streamImageFromUrl } from "@/app/api/streams";
 import { env } from "@/env";
 import { getCurrentUser } from "@/lib/session";
 import { getGroupImageUrlUseCase } from "@/use-cases/files";

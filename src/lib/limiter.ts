@@ -40,9 +40,9 @@ export async function rateLimitByIp({
   limit = 1,
   window = 10000,
 }: {
-  key: string;
-  limit: number;
-  window: number;
+  key?: string;
+  limit?: number;
+  window?: number;
 }) {
   const ip = getIp();
 
@@ -62,9 +62,9 @@ export async function rateLimitByKey({
   limit = 1,
   window = 10000,
 }: {
-  key: string;
-  limit: number;
-  window: number;
+  key?: string;
+  limit?: number;
+  window?: number;
 }) {
   const tracker = trackers[key] || { count: 0, expiresAt: 0 };
 

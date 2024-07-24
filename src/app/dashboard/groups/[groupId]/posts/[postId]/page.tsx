@@ -114,7 +114,7 @@ async function RepliesList({
   );
 }
 
-export async function ReplyCard({ reply }: { reply: Reply }) {
+async function ReplyCard({ reply }: { reply: Reply }) {
   const user = await getCurrentUser();
   const hasMutateAccess = await hasAccessToMutateReplyUseCase(user, reply.id);
 

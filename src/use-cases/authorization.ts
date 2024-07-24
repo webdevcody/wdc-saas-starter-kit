@@ -5,11 +5,7 @@ import { getMembership } from "@/data-access/membership";
 import { Group, GroupId } from "@/db/schema";
 import { UserSession } from "@/use-cases/types";
 
-export function isPremiumUser(user: UserSession) {
-  return user.plan !== "free";
-}
-
-export function isGroupOwner(user: UserSession, group: Group) {
+function isGroupOwner(user: UserSession, group: Group) {
   return user.id === group.userId;
 }
 

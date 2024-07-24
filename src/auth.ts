@@ -9,7 +9,7 @@ import { Session } from "lucia";
 import { env } from "@/env";
 import { UserId as CustomUserId } from "@/use-cases/types";
 
-const adapter = new DrizzlePostgreSQLAdapter(database, sessions, users);
+const adapter = new DrizzlePostgreSQLAdapter(database, sessions as any, users);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

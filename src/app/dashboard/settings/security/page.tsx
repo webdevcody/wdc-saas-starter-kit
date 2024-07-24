@@ -2,9 +2,6 @@ import { ConfigurationPanel } from "@/components/configuration-panel";
 import { LogoutButton } from "./logout-button";
 
 export default async function SecurityPage() {
-  return <SessionsPanel />;
-}
-export async function SessionsPanel() {
   return (
     <ConfigurationPanel title="Sessions">
       <div className="flex flex-col gap-4">

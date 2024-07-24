@@ -1,6 +1,9 @@
+"use client";
+
 import { generateStripeSessionAction } from "./actions";
 import { ReactNode } from "react";
-import { SubmitButton } from "@/components/submit-button";
+import { useServerAction } from "zsa-react";
+import { LoaderButton } from "@/components/loader-button";
 
 export function CheckoutButton({
   className,
@@ -11,9 +14,18 @@ export function CheckoutButton({
   children: ReactNode;
   priceId: string;
 }) {
+  const { execute, isPending } = useServerAction(generateStripeSessionAction);
+
   return (
-    <form action={generateStripeSessionAction.bind(null, { priceId })}>
-      <SubmitButton className={className}>{children}</SubmitButton>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        execute({ priceId });
+      }}
+    >
+      <LoaderButton isLoading={isPending} className={className}>
+        {children}
+      </LoaderButton>
     </form>
   );
 }
