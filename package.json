@@ -91,6 +91,7 @@
     "resend": "3.2.0",
     "sanitize-html": "^2.13.0",
     "server-only": "0.0.1",
+    "sharp": "^0.33.4",
     "stripe": "15.8.0",
     "tailwind-merge": "2.3.0",
     "tailwindcss-animate": "1.0.7",
