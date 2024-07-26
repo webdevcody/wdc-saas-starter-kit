@@ -46,7 +46,7 @@ export function FeaturesSection() {
             <CodeIcon /> Next.js 14 App Router
           </li>
           <li className={techClass}>
-            <LockIcon /> Authentication with Next-Auth
+            <LockIcon /> Authentication with Lucia-Auth
           </li>
           <li className={techClass}>
             <DollarSignIcon /> One-Off Payments with Stripe

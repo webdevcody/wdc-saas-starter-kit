@@ -16,10 +16,10 @@ import { LogOut, Settings2Icon } from "lucide-react";
 
 import Image from "next/image";
 import { ModeToggle } from "@/components/mode-toggle";
-import { Session } from "next-auth";
 import Link from "next/link";
 import { applicationName } from "@/app-config";
 import { Button } from "@/components/ui/button";
+import { Session } from "lucia";
 
 export function ConditionalHeader({
   session,
@@ -90,7 +90,7 @@ export function ConditionalHeader({
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
-                    <AvatarImage src={session?.user?.image || undefined} />
+                    {/* <AvatarImage src={session?.user?.image || undefined} /> */}
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
