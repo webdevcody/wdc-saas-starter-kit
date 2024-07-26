@@ -13,7 +13,7 @@ export default async function GroupsContent({
   return (
     <div>
       {userGroups.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 gap-8 bg-slate-900 rounded-xl">
+        <div className="flex flex-col items-center justify-center py-12 gap-8 dark:bg-slate-900 rounded-xl">
           <Image
             src="/empty-state/mountain.svg"
             width="200"

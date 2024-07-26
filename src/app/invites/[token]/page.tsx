@@ -38,7 +38,7 @@ export default async function InvitesPage({
 
           <Button asChild>
             <Link
-              href={`/api/auth/signin?callbackUrl=${env.HOST_NAME}/invites/${token}`}
+              href={`/sign-in?callbackUrl=${env.HOST_NAME}/invites/${token}`}
             >
               Login to Accept Invite
             </Link>
