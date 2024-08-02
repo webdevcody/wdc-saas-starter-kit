@@ -14,7 +14,7 @@ export async function sendEmail(
     from: env.EMAIL_FROM,
     to: email,
     subject,
-    react: <>{body}</>,
+    react: body as React.ReactElement,
   });
 
   if (error) {
