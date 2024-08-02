@@ -3,12 +3,11 @@ import {
   getSubscription,
   updateSubscription,
 } from "@/data-access/subscriptions";
+import { Subscription } from "@/db/schema";
 import { env } from "@/env";
 import { Plan, UserId } from "@/use-cases/types";
 
-export async function getUserPlanUseCase(userId: UserId): Promise<Plan> {
-  const subscription = await getSubscription(userId);
-
+export function getSubscriptionPlan(subscription?: Subscription) {
   if (!subscription) {
     return "free";
   } else {
@@ -16,6 +15,11 @@ export async function getUserPlanUseCase(userId: UserId): Promise<Plan> {
       ? "premium"
       : "basic";
   }
+}
+
+export async function getUserPlanUseCase(userId: UserId): Promise<Plan> {
+  const subscription = await getSubscription(userId);
+  return getSubscriptionPlan(subscription);
 }
 
 export async function createSubscriptionUseCase(subscription: {

@@ -10,7 +10,6 @@ export default function ErrorPage({
 }: {
   error: Error & { digest?: string };
 }) {
-  console.log(error);
   const isAuthenticationError = error.message.includes(
     AUTHENTICATION_ERROR_MESSAGE
   );

@@ -43,7 +43,7 @@ export const generateStripeSessionAction = authenticatedAction
         },
       ],
       metadata: {
-        userId: userId,
+        userId,
       },
     });
 

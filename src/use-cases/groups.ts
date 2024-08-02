@@ -1,4 +1,4 @@
-import { MAX_GROUP_LIMIT } from "@/app-config";
+import { MAX_GROUP_LIMIT, MAX_GROUP_PREMIUM_LIMIT } from "@/app-config";
 import { AuthenticationError } from "@/app/util";
 import {
   countUserGroups,
@@ -15,6 +15,7 @@ import {
   updateGroup,
 } from "@/data-access/groups";
 import { getProfile } from "@/data-access/profiles";
+import { getSubscription } from "@/data-access/subscriptions";
 import { GroupId } from "@/db/schema";
 import {
   assertGroupMember,
@@ -23,7 +24,9 @@ import {
   isAdminOrOwnerOfGroup,
 } from "@/use-cases/authorization";
 import { MemberInfo, UserId, UserSession } from "@/use-cases/types";
+import { isSubscriptionActive } from "@/util/subscriptions";
 import { omit } from "lodash";
+import { getSubscriptionPlan, getUserPlanUseCase } from "./subscriptions";
 
 export async function createGroupUseCase(
   authenticatedUser: UserSession,
@@ -34,8 +37,17 @@ export async function createGroupUseCase(
 ) {
   const numberOfGroups = await countUserGroups(authenticatedUser.id);
 
-  // TODO: limits should change based on subscription plan
-  if (numberOfGroups >= MAX_GROUP_LIMIT) {
+  const subscription = await getSubscription(authenticatedUser.id);
+  if (!isSubscriptionActive(subscription)) {
+    throw new AuthenticationError();
+  }
+
+  const plan = getSubscriptionPlan(subscription);
+
+  if (
+    numberOfGroups >=
+    (plan === "premium" ? MAX_GROUP_PREMIUM_LIMIT : MAX_GROUP_LIMIT)
+  ) {
     throw new Error("You have reached the maximum number of groups");
   }
 
@@ -93,8 +105,6 @@ export async function getGroupMembersUseCase(
 
   const owner = (await getProfile(group.userId))!;
   const members = await getGroupMembers(groupId);
-
-  console.log({ members });
 
   return [
     {
