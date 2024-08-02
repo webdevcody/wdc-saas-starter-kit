@@ -7,7 +7,7 @@ import Image from "next/image";
 function FollowerCard({ profile }: { profile: Profile }) {
   return (
     <div key={profile.userId} className="flex items-center gap-4">
-      <div className="bg-slate-900 flex gap-4 items-center hover:underline border rounded-lg p-4">
+      <div className="dark:bg-slate-900 flex gap-4 items-center hover:underline border rounded-lg p-4">
         <Avatar>
           <AvatarImage src={profile.image || "/group.jpeg"} />
           <AvatarFallback>CN</AvatarFallback>
@@ -31,7 +31,7 @@ export default async function FollowersPage({
   return (
     <div className="space-y-8">
       {followers.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 gap-8 bg-slate-900 rounded-xl">
+        <div className="flex flex-col items-center justify-center py-12 gap-8 dark:bg-slate-900 rounded-xl">
           <Image
             src="/empty-state/mountain.svg"
             width="200"

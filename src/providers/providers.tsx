@@ -2,7 +2,6 @@
 
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
-import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import { ThemeProvider } from "./theme-provider";
 import { env } from "@/env";
@@ -18,7 +17,6 @@ if (typeof window !== "undefined") {
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <RootProvider>
-      {/* <SessionProvider> */}
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
@@ -27,7 +25,6 @@ export function Providers({ children }: { children: ReactNode }) {
       >
         <PostHogProvider client={posthog}>{children}</PostHogProvider>
       </ThemeProvider>
-      {/* </SessionProvider> */}
     </RootProvider>
   );
 }
