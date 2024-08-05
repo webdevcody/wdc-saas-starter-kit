@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <div className="bg-white dark:bg-gray-950">
+    <>
       <Container>
         <div className="flex flex-col md:flex-row gap-y-14 w-full justify-between">
           <div className="">
@@ -48,6 +48,6 @@ export function HeroSection() {
           />
         </div>
       </Container>
-    </div>
+    </>
   );
 }
