@@ -21,7 +21,7 @@ function PricingCard({
   features: string[];
 }) {
   return (
-    <div className="flex overflow-hidden relative flex-col w-[23rem] p-6 text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-800 xl:p-8 dark:bg-transparent dark:text-white">
+    <div className="flex overflow-hidden relative flex-col w-full md:w-[23rem] p-6 text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-800 xl:p-8 dark:bg-transparent dark:text-white">
       <div className="glow absolute -z-10 aspect-square w-full max-w-xl rounded-full bg-gradient-to-br from-blue-600/15 to-green-500/15 blur-3xl filter" />
       <h3 className="text-xl font-semibold">{title}</h3>
 
@@ -82,7 +82,7 @@ export function PricingSection({
           your journey today and achieve your goals!
         </p>
 
-        <div className="flex flex-col md:flex-row justify-center mx-auto gap-12">
+        <div className="flex flex-col md:flex-row justify-center w-full gap-12">
           {/* <PricingCard
             title="Free"
             price="0"
