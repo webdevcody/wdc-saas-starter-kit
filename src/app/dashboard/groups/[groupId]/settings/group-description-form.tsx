@@ -52,7 +52,7 @@ export function GroupDescriptionForm({
       }).then(([data, err]) => {
         if (err) {
           toast({
-            title: "Uhoh, something went wrong",
+            title: "Uh-oh, something went wrong",
             variant: "destructive",
             description: "Your description was not successfully updated.",
           });

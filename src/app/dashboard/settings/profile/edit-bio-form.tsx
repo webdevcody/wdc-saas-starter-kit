@@ -34,7 +34,7 @@ export function EditBioForm({ bio }: { bio: string }) {
             execute({ bio: htmlRef.current }).then(([, err]) => {
               if (err) {
                 toast({
-                  title: "Uhoh!",
+                  title: "Uh-oh!",
                   variant: "destructive",
                   description: "Your profile bio failed to update.",
                 });

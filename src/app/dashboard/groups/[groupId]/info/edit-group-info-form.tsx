@@ -141,7 +141,7 @@ export const EditGroupInfoForm = ({
               execute({ groupId, info: htmlRef.current }).then(([, err]) => {
                 if (err) {
                   toast({
-                    title: "Uhoh!",
+                    title: "Uh-oh!",
                     variant: "destructive",
                     description: "The group info failed to update.",
                   });
