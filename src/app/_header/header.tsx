@@ -23,23 +23,17 @@ import {
 import { getProfileImageFullUrl } from "@/app/dashboard/settings/profile/profile-image";
 import { Notifications } from "./notifications";
 import { MenuButton } from "./menu-button";
+import Container from "@/components/container";
 
 export async function Header() {
   const user = await getCurrentUser();
 
   return (
-    <div className="border-b py-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex gap-8 items-center">
-          <Link href="/" className="flex gap-2 items-center text-xl">
-            <Image
-              className="rounded w-8 h-8"
-              width="50"
-              height="50"
-              src="/group.jpeg"
-              alt="hero image"
-            />
-            <div className="hidden md:block">{applicationName}</div>
+    <div className="px-5 md:px-6">
+      <div className="mx-auto flex w-full max-w-7xl py-4 justify-between">
+        <div className="flex justify-between gap-10 items-center">
+          <Link href="/" className="">
+            <span className="text-2xl font-bold">{applicationName}</span>
           </Link>
 
           <HeaderLinks isAuthenticated={!!user} />
