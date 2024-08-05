@@ -1,5 +1,4 @@
 import { applicationName, companyName } from "@/app-config";
-import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
@@ -45,7 +44,7 @@ export function Footer() {
           </div>
         </div>
       </footer> */}
-      <footer className="py-8 pb-8 border-t">
+      <footer className="py-8 px-5 border-t">
         <div className="text-center">
           <span className="block text-sm text-center text-gray-500 dark:text-gray-400">
             © 2024 <Link href="/">{applicationName}</Link>. All Rights Reserved.
