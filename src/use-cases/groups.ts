@@ -38,10 +38,6 @@ export async function createGroupUseCase(
   const numberOfGroups = await countUserGroups(authenticatedUser.id);
 
   const subscription = await getSubscription(authenticatedUser.id);
-  if (!isSubscriptionActive(subscription)) {
-    throw new AuthenticationError();
-  }
-
   const plan = getSubscriptionPlan(subscription);
 
   if (
