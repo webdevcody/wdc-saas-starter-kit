@@ -241,7 +241,7 @@ export const followingRelationship = relations(following, ({ one }) => ({
   }),
   userProfile: one(profiles, {
     fields: [following.userId],
-    references: [profiles.id],
+    references: [profiles.userId],
   }),
 }));
 
