@@ -1,14 +1,14 @@
-import { SignedIn } from '@/components/auth';
-import { SignedOut } from '@/components/auth';
-import Container from '@/components/container';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import Link from 'next/link';
+import { SignedIn } from "@/components/auth";
+import { SignedOut } from "@/components/auth";
+import Container from "@/components/container";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <>
       <Container>
         <div className="flex flex-col md:flex-row gap-y-14 w-full justify-between">
           <div className="">
@@ -28,13 +28,13 @@ export function HeroSection() {
             <div className="space-y-4 sm:flex sm:space-y-0 sm:space-x-4 mt-10">
               <SignedIn>
                 <Button asChild>
-                  <Link href={'/dashboard'}>View Dashboard</Link>
+                  <Link href={"/dashboard"}>View Dashboard</Link>
                 </Button>
               </SignedIn>
 
               <SignedOut>
                 <Button asChild>
-                  <Link href={'/sign-in'}>Create an Account</Link>
+                  <Link href={"/sign-in"}>Create an Account</Link>
                 </Button>
               </SignedOut>
             </div>
@@ -48,6 +48,6 @@ export function HeroSection() {
           />
         </div>
       </Container>
-    </div>
+    </>
   );
 }

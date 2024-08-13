@@ -1,5 +1,6 @@
 import { SignedIn } from "@/components/auth";
 import { SignedOut } from "@/components/auth";
+import Container from "@/components/container";
 import { CheckoutButton } from "@/components/stripe/upgrade-button/checkout-button";
 import { Button } from "@/components/ui/button";
 import { env } from "@/env";
@@ -20,24 +21,23 @@ function PricingCard({
   features: string[];
 }) {
   return (
-    <div className="flex flex-col w-fit p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-      <h3 className="text-2xl font-semibold">{title}</h3>
+    <div className="flex overflow-hidden relative flex-col w-full md:w-[23rem] p-6 text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-800 xl:p-8 dark:bg-transparent dark:text-white">
+      <div className="glow absolute -z-10 aspect-square w-full max-w-xl rounded-full bg-gradient-to-br from-blue-600/15 to-green-500/15 blur-3xl filter" />
+      <h3 className="text-xl font-semibold">{title}</h3>
 
-      <div className="flex flex-col items-center my-8">
-        <div className="mr-2 text-4xl font-extrabold mb-2">
-          ${price} / month
-        </div>
+      <div className="mr-2 text-4xl font-extrabold mb-8 mt-5">
+        ${price} / month
       </div>
 
-      <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+      <p className="font-light sm:text-lg mb-2 text-left">
         What this plan includes:
       </p>
 
       <ul role="list" className="mb-8 text-left leading-10">
         {features.map((feature) => (
           <li key={feature} className="flex items-center space-x-3">
-            <CheckIcon className="text-green-400" />
-            <span>{feature}</span>
+            <CheckIcon className="text-green-400 size-5" />
+            <span className="dark:text-gray-200">{feature}</span>
           </li>
         ))}
       </ul>
@@ -56,7 +56,7 @@ function PricingCard({
         </SignedIn>
 
         <SignedOut>
-          <Button variant={"default"} asChild>
+          <Button variant={"default"} asChild className="w-full">
             <Link href={"/sign-in"}>Sign in to Upgrade</Link>
           </Button>
         </SignedOut>
@@ -71,15 +71,18 @@ export function PricingSection({
   hasSubscription: boolean;
 }) {
   return (
-    <section className="bg-white dark:bg-gray-900" id="pricing">
-      <div className="max-w-screen-xl px-4 py-8 mx-auto lg:py-24 lg:px-6">
-        <div className="max-w-screen-md mx-auto mb-8 text-center lg:mb-12">
-          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Pricing
-          </h2>
-        </div>
+    <section id="pricing">
+      <Container>
+        <h2 className="mb-5 text-center text-5xl font-bold text-gray-900 dark:text-white">
+          Simple pricing for everyone
+        </h2>
+        <p className="mb-14 max-w-3xl text-center w-full">
+          Choose the plan that suits you best. Enjoy full access to premium
+          content and expert support. <br className="hidden md:block" /> Start
+          your journey today and achieve your goals!
+        </p>
 
-        <div className="flex justify-center mx-auto gap-8">
+        <div className="flex flex-col md:flex-row justify-center w-full gap-12">
           {/* <PricingCard
             title="Free"
             price="0"
@@ -120,7 +123,7 @@ export function PricingSection({
             ]}
           />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
