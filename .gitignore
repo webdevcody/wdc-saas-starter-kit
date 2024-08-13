@@ -39,3 +39,7 @@ next-env.d.ts
 .env
 
 local.db
+
+# mine
+.idea/
+/docs/
