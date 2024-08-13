@@ -107,7 +107,7 @@ export default function SignInPage() {
           {error && (
             <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>Uhoh, we couldn&apos;t log you in</AlertTitle>
+              <AlertTitle>Uh-oh, we couldn&apos;t log you in</AlertTitle>
               <AlertDescription>{error.message}</AlertDescription>
             </Alert>
           )}

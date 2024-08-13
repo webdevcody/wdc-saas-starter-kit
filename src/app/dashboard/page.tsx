@@ -41,7 +41,7 @@ export default async function DashboardPage() {
             height="200"
             alt="no image placeholder image"
           ></Image>
-          <h2>Uhoh, you don't own any groups</h2>
+          <h2>Uh-oh, you don't own any groups</h2>
 
           <div className="flex gap-4">
             <CreateGroupButton />
