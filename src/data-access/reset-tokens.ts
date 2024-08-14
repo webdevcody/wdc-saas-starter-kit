@@ -19,7 +19,7 @@ export async function createPasswordResetToken(userId: UserId) {
       tokenExpiresAt,
     })
     .onConflictDoUpdate({
-      target: resetTokens.id,
+      target: resetTokens.userId,
       set: {
         token,
         tokenExpiresAt,
