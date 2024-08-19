@@ -27,19 +27,19 @@ import { btnIconStyles, btnStyles } from "@/styles/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MailIcon } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useServerAction } from "zsa-react";
 
 export const schema = z.object({
-  email: z.string().min(1),
+  email: z.string().email(),
 });
 
 export function InviteButton() {
   const { toast } = useToast();
   const { groupId } = useParams<{ groupId: string }>();
   const [isOpen, setIsOpen] = useState(false);
-  const [pending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -48,19 +48,28 @@ export function InviteButton() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    startTransition(() => {
-      sendInviteAction({
-        email: values.email,
-        groupId: parseInt(groupId),
-      }).then(() => {
-        setIsOpen(false);
-        form.reset();
-        toast({
-          title: "Invite Sent",
-          description: "Tell your friend to check their email.",
-        });
+  const { execute: sendInvite, isPending } = useServerAction(sendInviteAction, {
+    onSuccess: () => {
+      setIsOpen(false);
+      form.reset();
+      toast({
+        title: "Invite Sent",
+        description: "Tell your friend to check their email.",
       });
+    },
+    onError: ({ err }) => {
+      toast({
+        title: "Error",
+        description: err.message || "Failed to send invite.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof schema>) {
+    sendInvite({
+      email: values.email,
+      groupId: parseInt(groupId),
     });
   }
 
@@ -97,7 +106,7 @@ export function InviteButton() {
 
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <LoaderButton isLoading={pending}>Invite</LoaderButton>
+              <LoaderButton isLoading={isPending}>Invite</LoaderButton>
             </AlertDialogFooter>
           </form>
         </Form>

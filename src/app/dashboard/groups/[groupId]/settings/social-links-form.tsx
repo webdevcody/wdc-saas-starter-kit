@@ -11,18 +11,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoaderButton } from "@/components/loader-button";
 import { useToast } from "@/components/ui/use-toast";
 import { updateGroupSocialLinksAction } from "./actions";
 import { Group } from "@/db/schema";
 import { socialUrlSchema } from "./schema";
+import { useServerAction } from "zsa-react";
 
 const updateSocialLinksSchema = z.object(socialUrlSchema);
 
 export function SocialLinksForm({ group }: { group: Group }) {
-  const [pending, startTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof updateSocialLinksSchema>>({
@@ -35,19 +34,29 @@ export function SocialLinksForm({ group }: { group: Group }) {
     },
   });
 
+  const { execute: updateSocialLinks, isPending } = useServerAction(
+    updateGroupSocialLinksAction,
+    {
+      onSuccess: () => {
+        toast({
+          title: "Group Updated",
+          description: "Your social links have been updated.",
+        });
+      },
+      onError: ({ err }) => {
+        toast({
+          title: "Error",
+          description: err.message || "Failed to update social links.",
+          variant: "destructive",
+        });
+      },
+    }
+  );
+
   const onSubmit: SubmitHandler<z.infer<typeof updateSocialLinksSchema>> = (
     values
   ) => {
-    startTransition(() => {
-      updateGroupSocialLinksAction({ groupId: group.id, ...values }).then(
-        () => {
-          toast({
-            title: "Group Updated",
-            description: "Your social links have been updated.",
-          });
-        }
-      );
-    });
+    updateSocialLinks({ groupId: group.id, ...values });
   };
 
   return (
@@ -108,7 +117,7 @@ export function SocialLinksForm({ group }: { group: Group }) {
             </FormItem>
           )}
         />
-        <LoaderButton className="w-fit ml-auto" isLoading={pending}>
+        <LoaderButton className="w-fit ml-auto" isLoading={isPending}>
           Save
         </LoaderButton>
       </form>

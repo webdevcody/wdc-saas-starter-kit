@@ -21,11 +21,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { deleteAccountAction } from "./actions";
+import { useServerAction } from "zsa-react";
 
 export const deleteSchema = z.object({
   confirm: z.string().refine((v) => v === "Please delete", {
@@ -35,7 +37,7 @@ export const deleteSchema = z.object({
 
 export function DeleteAccountButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [pending, startTransition] = useTransition();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof deleteSchema>>({
     resolver: zodResolver(deleteSchema),
@@ -44,10 +46,28 @@ export function DeleteAccountButton() {
     },
   });
 
+  const { execute: deleteAccount, isPending } = useServerAction(
+    deleteAccountAction,
+    {
+      onSuccess: () => {
+        setIsOpen(false);
+        toast({
+          title: "Account Deleted",
+          description: "Your account has been successfully deleted.",
+        });
+      },
+      onError: ({ err }) => {
+        toast({
+          title: "Error",
+          description: err.message || "Failed to delete account.",
+          variant: "destructive",
+        });
+      },
+    }
+  );
+
   function onSubmit() {
-    startTransition(() => {
-      deleteAccountAction();
-    });
+    deleteAccount();
   }
 
   return (
@@ -85,7 +105,7 @@ export function DeleteAccountButton() {
 
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <LoaderButton isLoading={pending} variant="destructive">
+              <LoaderButton isLoading={isPending} variant="destructive">
                 Delete
               </LoaderButton>
             </AlertDialogFooter>
