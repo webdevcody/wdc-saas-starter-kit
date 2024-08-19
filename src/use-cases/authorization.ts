@@ -4,6 +4,7 @@ import { getGroupById } from "@/data-access/groups";
 import { getMembership } from "@/data-access/membership";
 import { Group, GroupId } from "@/db/schema";
 import { UserSession } from "@/use-cases/types";
+import { PublicError } from "./errors";
 
 function isGroupOwner(user: UserSession, group: Group) {
   return user.id === group.userId;
@@ -16,7 +17,7 @@ export async function hasAccessToGroup(
   const group = await getGroupById(groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   if (group.isPublic) {
@@ -45,7 +46,7 @@ export async function isAdminOrOwnerOfGroup(
   const group = await getGroupById(groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   const isAdmin = membership?.role === "admin";

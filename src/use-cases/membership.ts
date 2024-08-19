@@ -9,6 +9,7 @@ import {
 } from "@/data-access/membership";
 import { Role, UserId, UserSession } from "@/use-cases/types";
 import { assertGroupOwner, assertGroupVisible } from "./authorization";
+import { PublicError } from "./errors";
 
 export async function isGroupOwnerUseCase(
   authenticatedUser: UserSession | undefined,
@@ -36,7 +37,7 @@ export async function isUserMemberOfGroupUseCase(
   const group = await getGroupById(groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   const isGroupOwner = group.userId === authenticatedUser.id;
@@ -58,7 +59,7 @@ export async function joinGroupUseCase(
 ) {
   const membership = await getMembership(authenticatedUser.id, groupId);
   if (membership) {
-    throw new Error("User is already a member of this group");
+    throw new PublicError("User is already a member of this group");
   }
   await addMembership(authenticatedUser.id, groupId);
 }
@@ -69,7 +70,7 @@ export async function leaveGroupUseCase(
 ) {
   const membership = await getMembership(authenticatedUser.id, groupId);
   if (!membership) {
-    throw new Error("User is not a member of this group");
+    throw new PublicError("User is not a member of this group");
   }
   await removeMembership(authenticatedUser.id, groupId);
 }
@@ -100,7 +101,7 @@ export async function kickMemberUseCase(
 ) {
   const membership = await getMembership(userId, groupId);
   if (!membership) {
-    throw new Error("User is not a member of this group");
+    throw new PublicError("User is not a member of this group");
   }
   await assertGroupOwner(authenticatedUser, groupId);
   await removeMembership(userId, groupId);
@@ -116,7 +117,7 @@ export async function switchMemberRoleUseCase(
 ) {
   const membership = await getMembership(userId, groupId);
   if (!membership) {
-    throw new Error("User is not a member of this group");
+    throw new PublicError("User is not a member of this group");
   }
   await assertGroupOwner(authenticatedUser, groupId);
   await updateMembership(membership.id, {

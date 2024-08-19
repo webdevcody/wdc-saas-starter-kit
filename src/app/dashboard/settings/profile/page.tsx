@@ -1,7 +1,7 @@
 import { ProfileImage } from "@/app/dashboard/settings/profile/profile-image";
 import { ProfileName } from "@/app/dashboard/settings/profile/profile-name";
 import { EditBioForm } from "./edit-bio-form";
-import { getCurrentUser } from "@/lib/session";
+import { assertAuthenticated } from "@/lib/session";
 import { Suspense, cache } from "react";
 import { getUserProfileUseCase } from "@/use-cases/users";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,13 +27,7 @@ export default async function SettingsPage() {
 }
 
 export async function BioFormWrapper() {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
+  const user = await assertAuthenticated();
   const profile = await getUserProfileLoader(user.id);
-
   return <EditBioForm bio={profile.bio} />;
 }

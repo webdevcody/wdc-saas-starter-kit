@@ -1,5 +1,4 @@
 import { MAX_GROUP_LIMIT, MAX_GROUP_PREMIUM_LIMIT } from "@/app-config";
-import { AuthenticationError } from "@/app/util";
 import {
   countUserGroups,
   createGroup,
@@ -24,9 +23,9 @@ import {
   isAdminOrOwnerOfGroup,
 } from "@/use-cases/authorization";
 import { MemberInfo, UserId, UserSession } from "@/use-cases/types";
-import { isSubscriptionActive } from "@/util/subscriptions";
 import { omit } from "lodash";
-import { getSubscriptionPlan, getUserPlanUseCase } from "./subscriptions";
+import { getSubscriptionPlan } from "./subscriptions";
+import { PublicError } from "./errors";
 
 export async function createGroupUseCase(
   authenticatedUser: UserSession,
@@ -44,7 +43,7 @@ export async function createGroupUseCase(
     numberOfGroups >=
     (plan === "premium" ? MAX_GROUP_PREMIUM_LIMIT : MAX_GROUP_LIMIT)
   ) {
-    throw new Error("You have reached the maximum number of groups");
+    throw new PublicError("You have reached the maximum number of groups");
   }
 
   await createGroup({ ...newGroup, userId: authenticatedUser.id });

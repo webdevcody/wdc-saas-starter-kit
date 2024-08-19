@@ -12,6 +12,7 @@ import {
 } from "@/data-access/posts";
 import { isAdminOrOwnerOfGroup } from "./authorization";
 import { AuthenticationError } from "@/app/util";
+import { PublicError } from "./errors";
 
 // TODO: clean up this function
 export async function getPostsInGroupUseCase(
@@ -21,7 +22,7 @@ export async function getPostsInGroupUseCase(
   const group = await getGroupById(groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   if (!isGroupVisibleToUserUseCase(authenticatedUser, groupId)) {
@@ -39,7 +40,7 @@ export async function getPostByIdUseCase(
   const post = await getPostById(postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   if (!isGroupVisibleToUserUseCase(authenticatedUser, post.groupId)) {
@@ -64,7 +65,7 @@ export async function createPostUseCase(
   const group = await getGroupById(groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   if (!isGroupVisibleToUserUseCase(authenticatedUser, groupId)) {
@@ -91,13 +92,13 @@ export async function deletePostUseCase(
   const post = await getPostById(postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   const group = await getGroupById(post.groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   const isPostOwner = post.userId === authenticatedUser.id;
@@ -126,13 +127,13 @@ export async function updatePostUseCase(
   const post = await getPostById(postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   const group = await getGroupById(post.groupId);
 
   if (!group) {
-    throw new Error("Group not found");
+    throw new PublicError("Group not found");
   }
 
   const isPostOwner = post.userId === authenticatedUser.id;

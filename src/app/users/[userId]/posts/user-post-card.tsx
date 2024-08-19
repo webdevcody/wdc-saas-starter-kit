@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/db/schema";
 import { canEditPostUseCase } from "@/use-cases/posts";
-import { getCurrentUser } from "@/lib/session";
+import { assertAuthenticated, getCurrentUser } from "@/lib/session";
 import { getReplyCountUseCase } from "@/use-cases/replies";
 import { getUserProfileUseCase } from "@/use-cases/users";
 import { getProfileImageFullUrl } from "@/app/dashboard/settings/profile/profile-image";
@@ -42,12 +42,7 @@ async function PostAvatar({ userId }: { userId: number }) {
 }
 
 export async function UserPostCard({ post }: { post: Post }) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
+  const user = await assertAuthenticated();
   const canDeletePost = await canEditPostUseCase(user, post.id);
   const replyCount = await getReplyCountUseCase(user, post.id);
   // TODO: this should be a use case

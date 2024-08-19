@@ -1,4 +1,3 @@
-import { getGroupById } from "@/data-access/groups";
 import { createInvite, deleteInvite, getInvite } from "@/data-access/invites";
 import { addMembership } from "@/data-access/membership";
 import { GroupId } from "@/db/schema";
@@ -7,9 +6,9 @@ import { sendEmail } from "@/lib/send-email";
 import {
   assertAdminOrOwnerOfGroup,
   assertGroupExists,
-  isAdminOrOwnerOfGroup,
 } from "@/use-cases/authorization";
 import { UserSession } from "@/use-cases/types";
+import { PublicError } from "@/use-cases/errors";
 
 export async function sendInviteUseCase(
   authenticatedUser: UserSession,
@@ -32,7 +31,11 @@ export async function acceptInviteUseCase(
   const invite = await getInvite(token);
 
   if (!invite) {
-    throw new Error("This invite does not exist");
+    throw new PublicError("This invite does not exist or has expired");
+  }
+
+  if (invite.tokenExpiresAt! < new Date()) {
+    throw new PublicError("This invite has expired");
   }
 
   await addMembership(authenticatedUser.id, invite.groupId);

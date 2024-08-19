@@ -59,7 +59,7 @@ export async function deleteUserUseCase(
   userToDeleteId: UserId
 ): Promise<void> {
   if (authenticatedUser.id !== userToDeleteId) {
-    throw new Error("You can only delete your own account");
+    throw new PublicError("You can only delete your own account");
   }
 
   await deleteUser(userToDeleteId);
@@ -69,7 +69,7 @@ export async function getUserProfileUseCase(userId: UserId) {
   const profile = await getProfile(userId);
 
   if (!profile) {
-    throw new Error("User not found");
+    throw new PublicError("User not found");
   }
 
   return profile;
@@ -78,7 +78,7 @@ export async function getUserProfileUseCase(userId: UserId) {
 export async function registerUserUseCase(email: string, password: string) {
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
-    throw new Error("An user with that email already exists.");
+    throw new PublicError("An user with that email already exists.");
   }
   const user = await createUser(email);
   await createAccount(user.id, password);
@@ -218,7 +218,7 @@ export async function changePasswordUseCase(token: string, password: string) {
   const tokenEntry = await getPasswordResetToken(token);
 
   if (!tokenEntry) {
-    throw new Error("Invalid token");
+    throw new PublicError("Invalid token");
   }
 
   const userId = tokenEntry.userId;
@@ -234,7 +234,7 @@ export async function verifyEmailUseCase(token: string) {
   const tokenEntry = await getVerifyEmailToken(token);
 
   if (!tokenEntry) {
-    throw new Error("Invalid token");
+    throw new PublicError("Invalid token");
   }
 
   const userId = tokenEntry.userId;
