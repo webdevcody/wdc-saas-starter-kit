@@ -1,4 +1,8 @@
-import { MAX_UPLOAD_IMAGE_SIZE, applicationName } from "@/app-config";
+import {
+  MAX_UPLOAD_IMAGE_SIZE,
+  MAX_UPLOAD_IMAGE_SIZE_IN_MB,
+  applicationName,
+} from "@/app-config";
 import {
   createUser,
   deleteUser,
@@ -122,7 +126,9 @@ export async function updateProfileImageUseCase(file: File, userId: UserId) {
   }
 
   if (file.size > MAX_UPLOAD_IMAGE_SIZE) {
-    throw new PublicError("File size should be less than 5MB.");
+    throw new PublicError(
+      `File size should be less than ${MAX_UPLOAD_IMAGE_SIZE_IN_MB}MB.`
+    );
   }
 
   const imageId = createUUID();
