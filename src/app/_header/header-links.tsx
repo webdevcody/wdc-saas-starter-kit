@@ -16,7 +16,7 @@ export function HeaderLinks({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
     <>
       {!isLandingPage && isAuthenticated && (
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <Button
             variant={"link"}
             asChild
@@ -50,7 +50,7 @@ export function HeaderLinks({ isAuthenticated }: { isAuthenticated: boolean }) {
       )}
 
       {(isLandingPage || !isAuthenticated) && (
-        <div className="flex gap-4">
+        <div className="hidden md:flex gap-4">
           <Button variant={"link"} asChild>
             <Link href="/#features">Features</Link>
           </Button>

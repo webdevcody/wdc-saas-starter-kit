@@ -22,14 +22,14 @@ export default async function NotificationsPage() {
   return (
     <>
       <PageHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
           <h1
             className={cn(pageTitleStyles, "flex justify-between items-center")}
           >
             Your Notifications
           </h1>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <MarkReadAllButton />
             <ClearReadButton />
           </div>
@@ -60,17 +60,23 @@ export default async function NotificationsPage() {
               return (
                 <div
                   key={notification.id}
-                  className="p-8 border rounded-xl space-y-4 w-full"
+                  className="p-4 sm:p-6 md:p-8 border rounded-xl space-y-4 w-full"
                 >
-                  <div className="flex items-center gap-8">
-                    {getNotificationIcon(notification)}
-                    <div className="space-y-2">
-                      <h3 className="text-xl">{notification.message}</h3>
-                      <p className="text-base text-gray-900 dark:text-gray-200">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 md:gap-8">
+                    <div className="flex-shrink-0">
+                      {getNotificationIcon(notification)}
+                    </div>
+                    <div className="space-y-2 flex-grow">
+                      <h3 className="text-lg sm:text-xl">
+                        {notification.message}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-900 dark:text-gray-200">
                         {formatDate(notification.createdOn)}
                       </p>
                     </div>
-                    <ViewButton notification={notification} />
+                    <div className="mt-4 sm:mt-0">
+                      <ViewButton notification={notification} />
+                    </div>
                   </div>
                 </div>
               );

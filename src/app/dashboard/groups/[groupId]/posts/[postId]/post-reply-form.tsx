@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CalendarDays, SendIcon, Terminal } from "lucide-react";
+import { SendIcon, Terminal } from "lucide-react";
 import { btnIconStyles } from "@/styles/icons";
 import { Textarea } from "@/components/ui/textarea";
 import { useServerAction } from "zsa-react";

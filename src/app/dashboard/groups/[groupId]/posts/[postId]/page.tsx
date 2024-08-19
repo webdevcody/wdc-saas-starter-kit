@@ -15,13 +15,12 @@ import { getProfileImageFullUrl } from "@/app/dashboard/settings/profile/profile
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/util/date";
-import { DeleteReplyButton } from "./delete-reply-button";
-import { EditReplyButton } from "./edit-reply-button";
 import { isUserMemberOfGroupUseCase } from "@/use-cases/membership";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ReplyActions } from "./reply-actions";
 
 export default async function PostPage({
   params,
@@ -119,9 +118,9 @@ async function ReplyCard({ reply }: { reply: Reply }) {
   const hasMutateAccess = await hasAccessToMutateReplyUseCase(user, reply.id);
 
   return (
-    <div key={reply.id} className={cn(cardStyles, "p-4 space-y-3")}>
-      <div className="flex justify-between">
-        <div className="flex gap-4 items-center">
+    <div key={reply.id} className={cn(cardStyles, "p-4 space-y-3 relative")}>
+      <div className=" flex flex-col sm:flex-row justify-between gap-2 sm:gap-0">
+        <div className="flex flex-wrap gap-4 items-center">
           <Suspense fallback={<ReplyAvatarFallback />}>
             <ReplyAvatar userId={reply.userId} />
           </Suspense>
@@ -129,14 +128,13 @@ async function ReplyCard({ reply }: { reply: Reply }) {
         </div>
 
         {hasMutateAccess && (
-          <div className="flex gap-2">
-            <EditReplyButton reply={reply} />
-            <DeleteReplyButton reply={reply} />
+          <div className="absolute top-2 right-2">
+            <ReplyActions reply={reply} />
           </div>
         )}
       </div>
 
-      <p>{reply.message}</p>
+      <p className="break-words">{reply.message}</p>
     </div>
   );
 }

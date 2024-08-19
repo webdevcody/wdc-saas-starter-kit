@@ -36,7 +36,7 @@ export function LeaveGroupButton() {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant={"destructive"} className={btnStyles}>
+        <Button variant={"destructive"} size={"sm"} className={btnStyles}>
           <DoorOpen className={btnIconStyles} /> Leave Group
         </Button>
       </AlertDialogTrigger>

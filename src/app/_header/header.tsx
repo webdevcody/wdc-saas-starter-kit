@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ModeToggle } from "@/components/mode-toggle";
 import { HeaderLinks } from "@/app/_header/header-links";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/session";
@@ -23,7 +22,6 @@ import {
 import { getProfileImageFullUrl } from "@/app/dashboard/settings/profile/profile-image";
 import { Notifications } from "./notifications";
 import { MenuButton } from "./menu-button";
-import Container from "@/components/container";
 
 export async function Header() {
   const user = await getCurrentUser();
@@ -32,8 +30,17 @@ export async function Header() {
     <div className="px-5 md:px-6">
       <div className="mx-auto flex w-full max-w-7xl py-4 justify-between">
         <div className="flex justify-between gap-10 items-center">
-          <Link href="/" className="">
-            <span className="text-2xl font-bold">{applicationName}</span>
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/group.jpeg"
+              alt="Group Finder Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <span className="text-sm md:text-base lg:text-2xl font-bold">
+              {applicationName}
+            </span>
           </Link>
 
           <HeaderLinks isAuthenticated={!!user} />
@@ -70,10 +77,6 @@ async function HeaderActions() {
     <>
       {isSignedIn ? (
         <>
-          <div className="hidden md:block">
-            <ModeToggle />
-          </div>
-
           <Suspense>
             <NotificationsWrapper />
           </Suspense>
@@ -109,8 +112,6 @@ async function HeaderActions() {
         </>
       ) : (
         <>
-          <ModeToggle />
-
           <Button asChild variant="secondary">
             <Link href="/sign-in">Sign In</Link>
           </Button>

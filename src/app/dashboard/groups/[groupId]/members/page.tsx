@@ -77,7 +77,7 @@ export default async function MembersPage({
       <h2 className="text-2xl flex items-center gap-2">
         <Crown /> Owner
       </h2>
-      <div className="grid grid-cols-4">
+      <div className="flex flex-wrap gap-4">
         {owners.map((member) => (
           <MemberCard
             showActions={false}
@@ -93,7 +93,7 @@ export default async function MembersPage({
           <h2 className="text-2xl flex items-center gap-2">
             <Gavel /> Admin
           </h2>
-          <div className="grid grid-cols-4">
+          <div className="flex flex-wrap gap-4">
             {admins.map((member) => (
               <MemberCard
                 groupId={groupId}
@@ -111,7 +111,7 @@ export default async function MembersPage({
           <h2 className="text-2xl flex items-center gap-2">
             <Users /> Members
           </h2>
-          <div className="grid grid-cols-4">
+          <div className="flex flex-wrap gap-4">
             {regularMembers.map((member) => (
               <MemberCard
                 groupId={groupId}
