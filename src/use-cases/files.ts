@@ -1,5 +1,8 @@
-import { MAX_UPLOAD_IMAGE_SIZE } from "@/app-config";
-import { getGroupById, updateGroup } from "@/data-access/groups";
+import {
+  MAX_UPLOAD_IMAGE_SIZE,
+  MAX_UPLOAD_IMAGE_SIZE_IN_MB,
+} from "@/app-config";
+import { updateGroup } from "@/data-access/groups";
 import { GroupId } from "@/db/schema";
 import {
   getFileUrl,
@@ -9,11 +12,10 @@ import {
 import {
   assertAdminOrOwnerOfGroup,
   assertGroupVisible,
-  hasAccessToGroup,
-  isAdminOrOwnerOfGroup,
 } from "@/use-cases/authorization";
 import { UserSession } from "@/use-cases/types";
 import { createUUID } from "@/util/uuid";
+import { PublicError } from "./errors";
 
 export async function getGroupImageUploadUrlUseCase(
   authenticatedUser: UserSession,
@@ -29,11 +31,13 @@ export async function updateGroupImageUseCase(
   { groupId, file }: { groupId: GroupId; file: File }
 ) {
   if (!file.type.startsWith("image/")) {
-    throw new Error("File should be an image.");
+    throw new PublicError("File should be an image.");
   }
 
   if (file.size > MAX_UPLOAD_IMAGE_SIZE) {
-    throw new Error("File size should be less than 5MB.");
+    throw new PublicError(
+      `File size should be less than ${MAX_UPLOAD_IMAGE_SIZE_IN_MB}MB.`
+    );
   }
 
   await assertAdminOrOwnerOfGroup(authenticatedUser, groupId);

@@ -47,7 +47,7 @@ import {
   getTop3UnreadNotificationsForUser,
 } from "@/data-access/notifications";
 import { createTransaction } from "@/data-access/utils";
-import { LoginError } from "./errors";
+import { LoginError, PublicError } from "./errors";
 import { deleteSessionForUser } from "@/data-access/sessions";
 
 export async function deleteUserUseCase(
@@ -118,11 +118,11 @@ export function getProfileImageKey(userId: UserId, imageId: string) {
 
 export async function updateProfileImageUseCase(file: File, userId: UserId) {
   if (!file.type.startsWith("image/")) {
-    throw new Error("File should be an image.");
+    throw new PublicError("File should be an image.");
   }
 
   if (file.size > MAX_UPLOAD_IMAGE_SIZE) {
-    throw new Error("File size should be less than 5MB.");
+    throw new PublicError("File size should be less than 5MB.");
   }
 
   const imageId = createUUID();
