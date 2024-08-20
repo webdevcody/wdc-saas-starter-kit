@@ -119,7 +119,24 @@ export const EditGroupInfoForm = ({
   isAdminOrOwner: boolean;
 }) => {
   const { toast } = useToast();
-  const { execute, isPending } = useServerAction(updateGroupInfoAction);
+  const { execute: updateGroupInfo, isPending } = useServerAction(
+    updateGroupInfoAction,
+    {
+      onSuccess() {
+        toast({
+          title: "Success!",
+          description: "Group info has been updated.",
+        });
+      },
+      onError() {
+        toast({
+          title: "Uh-oh!",
+          variant: "destructive",
+          description: "The group info failed to update.",
+        });
+      },
+    }
+  );
   const htmlRef = useRef<string>(info);
 
   return (
@@ -138,20 +155,7 @@ export const EditGroupInfoForm = ({
         <div className="flex justify-end">
           <LoaderButton
             onClick={() => {
-              execute({ groupId, info: htmlRef.current }).then(([, err]) => {
-                if (err) {
-                  toast({
-                    title: "Uh-oh!",
-                    variant: "destructive",
-                    description: "The group info failed to update.",
-                  });
-                } else {
-                  toast({
-                    title: "Success!",
-                    description: "Group info has been updated.",
-                  });
-                }
-              });
+              updateGroupInfo({ groupId, info: htmlRef.current });
             }}
             isLoading={isPending}
             className="self-end"
