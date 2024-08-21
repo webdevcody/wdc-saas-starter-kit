@@ -22,6 +22,7 @@ export function JoinGroupButton() {
 
   return (
     <LoaderButton
+      size={"sm"}
       isLoading={status === "pending"}
       onClick={() => {
         execute(parseInt(groupId));

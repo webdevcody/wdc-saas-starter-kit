@@ -20,7 +20,7 @@ export const socialUrlSchema = {
     .string()
     .url()
     .regex(/https\:\/\/(x|twitter)\.com/, {
-      message: "Must be a X link",
+      message: "Must be an X link",
     })
     .optional()
     .or(z.literal("")),

@@ -10,15 +10,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoaderButton } from "@/components/loader-button";
 import { useToast } from "@/components/ui/use-toast";
 import { updateGroupDescriptionAction } from "./actions";
 import { GroupId } from "@/db/schema";
 import { Textarea } from "@/components/ui/textarea";
-import { SaveIcon } from "lucide-react";
-import { btnIconStyles, btnStyles } from "@/styles/icons";
+import { useServerAction } from "zsa-react";
 
 const updateGroupDescription = z.object({
   description: z.string().min(1).max(750),
@@ -31,7 +29,6 @@ export function GroupDescriptionForm({
   description: string;
   groupId: GroupId;
 }) {
-  const [pending, startTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof updateGroupDescription>>({
@@ -41,29 +38,30 @@ export function GroupDescriptionForm({
     },
   });
 
+  const { execute: updateDescription, isPending } = useServerAction(
+    updateGroupDescriptionAction,
+    {
+      onSuccess: () => {
+        toast({
+          title: "Update Successful",
+          description: "Your group description has been updated.",
+        });
+      },
+      onError: ({ err }) => {
+        toast({
+          title: "Uh-oh, something went wrong",
+          description:
+            err.message || "Your description was not successfully updated.",
+          variant: "destructive",
+        });
+      },
+    }
+  );
+
   const onSubmit: SubmitHandler<z.infer<typeof updateGroupDescription>> = (
-    values,
-    event
+    values
   ) => {
-    startTransition(() => {
-      updateGroupDescriptionAction({
-        description: values.description,
-        groupId,
-      }).then(([data, err]) => {
-        if (err) {
-          toast({
-            title: "Uhoh, something went wrong",
-            variant: "destructive",
-            description: "Your description was not successfully updated.",
-          });
-        } else {
-          toast({
-            title: "Update Successful",
-            description: "Your group description has been updated.",
-          });
-        }
-      });
-    });
+    updateDescription({ description: values.description, groupId });
   };
 
   return (
@@ -89,7 +87,7 @@ export function GroupDescriptionForm({
             </FormItem>
           )}
         />
-        <LoaderButton className="w-fit self-end" isLoading={pending}>
+        <LoaderButton className="w-fit self-end" isLoading={isPending}>
           Save
         </LoaderButton>
       </form>

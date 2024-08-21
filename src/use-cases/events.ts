@@ -1,6 +1,6 @@
 import { GroupId } from "@/db/schema";
 import { UserSession } from "./types";
-import { getGroupById, getUsersInGroup } from "@/data-access/groups";
+import { getUsersInGroup } from "@/data-access/groups";
 import {
   assertAdminOrOwnerOfGroup,
   assertEventExists,
@@ -23,6 +23,7 @@ import { uploadFileToBucket } from "@/lib/files";
 import { getGroupImageKey } from "./files";
 import { createNotification } from "@/data-access/notifications";
 import { NotFoundError } from "@/app/util";
+import { PublicError } from "./errors";
 
 export async function getEventsUseCase(
   authenticatedUser: UserSession | undefined,
@@ -63,11 +64,11 @@ export async function createEventUseCase(
 ) {
   if (eventImage) {
     if (!eventImage.type.startsWith("image/")) {
-      throw new Error("File should be an image.");
+      throw new PublicError("File should be an image.");
     }
 
     if (eventImage.size > MAX_UPLOAD_IMAGE_SIZE) {
-      throw new Error(
+      throw new PublicError(
         `File size too large. Max size is ${MAX_UPLOAD_IMAGE_SIZE_IN_MB}MB`
       );
     }
@@ -126,11 +127,11 @@ export async function editEventUseCase(
 ) {
   if (eventImage) {
     if (!eventImage.type.startsWith("image/")) {
-      throw new Error("File should be an image.");
+      throw new PublicError("File should be an image.");
     }
 
     if (eventImage.size > MAX_UPLOAD_IMAGE_SIZE) {
-      throw new Error(
+      throw new PublicError(
         `File size too large. Max size is ${MAX_UPLOAD_IMAGE_SIZE_IN_MB}MB`
       );
     }

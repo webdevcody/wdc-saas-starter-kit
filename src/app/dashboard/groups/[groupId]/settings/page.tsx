@@ -24,9 +24,11 @@ export default async function Settings({
 
   return (
     <div className="space-y-8">
-      <h1 className={pageTitleStyles}>Group Settings</h1>
+      <h1 className={`${pageTitleStyles} text-center md:text-left`}>
+        Group Settings
+      </h1>
 
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <ConfigurationPanel title={"Group Image"}>
           <div className="flex flex-col gap-8">
             <Image
@@ -36,7 +38,7 @@ export default async function Settings({
               className="w-full h-[100px] object-cover"
               alt="image of the group"
             />
-            <p className="dark:text-gray-400">
+            <p className="dark:text-gray-400 text-sm">
               Upload a group image to make your group stand out.
             </p>
             <BannerUploadForm groupId={group.id} />
@@ -49,7 +51,7 @@ export default async function Settings({
 
         <ConfigurationPanel title={"Group Visibility"}>
           <div className="flex flex-col gap-8">
-            <p className="dark:text-gray-400">
+            <p className="dark:text-gray-400 text-sm">
               Groups are private by default. If you want random people on the
               internet to find and join your group without an invite, switch
               this to on.
@@ -59,7 +61,7 @@ export default async function Settings({
         </ConfigurationPanel>
       </div>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ConfigurationPanel title={"Group Description"}>
           <GroupDescriptionForm
             groupId={group.id}

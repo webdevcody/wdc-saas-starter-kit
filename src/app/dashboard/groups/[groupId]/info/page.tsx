@@ -44,24 +44,19 @@ export default async function InfoPage({
         <div>Info</div>
       </h1>
 
-      <div className="flex gap-8">
-        <div className="flex-grow">
-          <EditGroupInfoForm
-            isAdminOrOwner={isAdminOrOwner}
-            groupId={group.id}
-            info={group.info ?? ""}
-          />
-        </div>
-
+      <div className="flex flex-col lg:flex-row gap-8">
         <div
-          className={cn(cardStyles, "w-[300px] p-8 flex-shrink-0 space-y-8")}
+          className={cn(
+            cardStyles,
+            "w-full lg:w-[300px] p-4 lg:p-8 flex-shrink-0 space-y-8 order-first lg:order-last"
+          )}
         >
           <Image
             src={getGroupImageUrl(group)}
             width={300}
             height={200}
             alt="image of the group"
-            className="rounded-lg object-cover w-full mb-8"
+            className="rounded-lg object-cover w-full mb-8 max-h-[100px] md:max-h-[150px]"
           />
 
           <div className="break-words">{group.description}</div>
@@ -108,6 +103,14 @@ export default async function InfoPage({
               </Link>
             )}
           </div>
+        </div>
+
+        <div className="flex-grow w-full lg:w-auto">
+          <EditGroupInfoForm
+            isAdminOrOwner={isAdminOrOwner}
+            groupId={group.id}
+            info={group.info ?? ""}
+          />
         </div>
       </div>
     </div>

@@ -11,12 +11,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoaderButton } from "@/components/loader-button";
 import { useToast } from "@/components/ui/use-toast";
 import { updateGroupNameAction } from "./actions";
 import { GroupId } from "@/db/schema";
+import { useServerAction } from "zsa-react";
 
 const updateGroupNameSchema = z.object({
   name: z.string().min(1),
@@ -29,7 +29,6 @@ export function GroupNameForm({
   groupName: string;
   groupId: GroupId;
 }) {
-  const [pending, startTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof updateGroupNameSchema>>({
@@ -39,22 +38,30 @@ export function GroupNameForm({
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof updateGroupNameSchema>> = (
-    values,
-    event
-  ) => {
-    startTransition(() => {
-      updateGroupNameAction({ name: values.name, groupId }).then(() => {
-        if (event) {
-          const form = event.target as HTMLFormElement;
-          form.reset();
-        }
+  const { execute: updateGroupName, isPending } = useServerAction(
+    updateGroupNameAction,
+    {
+      onSuccess: () => {
         toast({
           title: "Name Updated",
           description: "Name updated successfully.",
         });
-      });
-    });
+        form.reset();
+      },
+      onError: ({ err }) => {
+        toast({
+          title: "Error",
+          description: err.message || "Failed to update group name.",
+          variant: "destructive",
+        });
+      },
+    }
+  );
+
+  const onSubmit: SubmitHandler<z.infer<typeof updateGroupNameSchema>> = (
+    values
+  ) => {
+    updateGroupName({ name: values.name, groupId });
   };
 
   return (
@@ -76,7 +83,7 @@ export function GroupNameForm({
             </FormItem>
           )}
         />
-        <LoaderButton isLoading={pending}>Save</LoaderButton>
+        <LoaderButton isLoading={isPending}>Save</LoaderButton>
       </form>
     </Form>
   );

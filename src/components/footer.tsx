@@ -1,6 +1,6 @@
 import { applicationName, companyName } from "@/app-config";
-import Image from "next/image";
 import Link from "next/link";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function Footer() {
   return (
@@ -43,29 +43,19 @@ export function Footer() {
               </ul>
             </div>
           </div>
+          <div className="mt-8 flex justify-center">
+            <ModeToggle />
+          </div>
         </div>
       </footer>
-      <div className="py-8 pb-8 bg-white dark:bg-gray-900">
+      <footer className="py-8 px-5 border-t">
         <div className="text-center">
-          <a
-            href="#"
-            className="gap-4 flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <Image
-              src="/group.jpeg"
-              className="w-10 h-10 rounded-xl"
-              alt="Landwind Logo"
-              width="100"
-              height="100"
-            />
-            {applicationName}
-          </a>
           <span className="block text-sm text-center text-gray-500 dark:text-gray-400">
-            © 2024 {applicationName}. All Rights Reserved. Built with ❤️ by{" "}
-            {companyName}
+            © 2024 <Link href="/">{applicationName}</Link>. All Rights Reserved.
+            Built with ❤️ by {companyName}
           </span>
         </div>
-      </div>
+      </footer>
     </>
   );
 }

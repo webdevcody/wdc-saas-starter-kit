@@ -1,5 +1,5 @@
 export const appConfig: {
-  mode: "comingSoon" | "maintence" | "live";
+  mode: "comingSoon" | "maintenance" | "live";
 } = {
   mode: "live",
 };

@@ -14,6 +14,7 @@ import { Header } from "@/app/_header/header";
 
 import { Archivo } from "next/font/google";
 import { Libre_Franklin } from "next/font/google";
+import { BreakpointOverlay } from "@/components/breakpoint-overlay";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -88,6 +89,7 @@ export default async function RootLayout({
           </div>
         </Providers>
         <Toaster />
+        <BreakpointOverlay />
       </body>
     </html>
   );

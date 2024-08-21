@@ -88,7 +88,7 @@ export default function ResetPasswordPage({
           {error && (
             <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>Uhoh, something went wrong</AlertTitle>
+              <AlertTitle>Uh-oh, something went wrong</AlertTitle>
               <AlertDescription>{error.message}</AlertDescription>
             </Alert>
           )}

@@ -42,9 +42,9 @@ export default async function FollowersPage({
         </div>
       )}
 
-      <div className="grid grid-cols-4">
+      <div className="flex flex-wrap gap-4">
         {followers.map((follower) => (
-          <FollowerCard profile={follower} />
+          <FollowerCard key={follower.userId} profile={follower} />
         ))}
       </div>
     </div>

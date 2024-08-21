@@ -17,10 +17,10 @@ export default async function Home() {
     return <ComingSoon />;
   }
 
-  if (appConfig.mode === "maintence") {
+  if (appConfig.mode === "maintenance") {
     return (
       <div>
-        <h1>Maintence</h1>
+        <h1>Maintenance</h1>
       </div>
     );
   }

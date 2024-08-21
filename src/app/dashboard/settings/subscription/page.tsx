@@ -2,16 +2,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { env } from "@/env";
 import { getUserPlanUseCase } from "@/use-cases/subscriptions";
-import { getCurrentUser } from "@/lib/session";
 import { ConfigurationPanel } from "@/components/configuration-panel";
+import { assertAuthenticated } from "@/lib/session";
 
 export default async function SubscriptionPage() {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
+  const user = await assertAuthenticated();
   const currrentPlan = await getUserPlanUseCase(user.id);
 
   return (

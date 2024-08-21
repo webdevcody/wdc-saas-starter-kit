@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/db/schema";
 import { canEditPostUseCase } from "@/use-cases/posts";
-import { getCurrentUser } from "@/lib/session";
+import { assertAuthenticated, getCurrentUser } from "@/lib/session";
 import { getReplyCountUseCase } from "@/use-cases/replies";
 import { getUserProfileUseCase } from "@/use-cases/users";
 import { getProfileImageFullUrl } from "@/app/dashboard/settings/profile/profile-image";
@@ -42,15 +42,9 @@ async function PostAvatar({ userId }: { userId: number }) {
 }
 
 export async function UserPostCard({ post }: { post: Post }) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
+  const user = await assertAuthenticated();
   const canDeletePost = await canEditPostUseCase(user, post.id);
   const replyCount = await getReplyCountUseCase(user, post.id);
-  // TODO: this should be a use case
   const group = (await getGroupById(post.groupId))!;
 
   return (
@@ -59,40 +53,42 @@ export async function UserPostCard({ post }: { post: Post }) {
         <h3 className="text-xl font-bold">{post.title}</h3>
       </div>
 
-      <p>{post.message}</p>
+      <p className="break-words">{post.message}</p>
 
-      <div className="flex justify-between">
-        <div className="text-gray-400 flex gap-4 w-full items-center">
-          <div className="flex gap-2 items-center text-sm">
+      <div className="flex flex-col sm:flex-row justify-between gap-4">
+        <div className="text-gray-400 flex flex-wrap gap-2 sm:gap-4 w-full items-center text-sm">
+          <div className="flex gap-2 items-center">
             <MessageCircle className="w-4 h-4" /> {replyCount}
           </div>
-          <div>|</div>
+          <div className="hidden sm:block">|</div>
           <Suspense fallback={<PostAvatarFallback />}>
             <PostAvatar userId={post.userId} />
           </Suspense>
-          <div className="text-sm"> {formatDate(post.createdOn)}</div>
+          <div>{formatDate(post.createdOn)}</div>
           <Link
             scroll={false}
-            className={linkStyles}
+            className={cn(linkStyles, "break-all")}
             href={`/dashboard/groups/${group.id}/info`}
           >
             {group.name}
           </Link>
         </div>
 
-        {canDeletePost ? (
-          <Button asChild className="w-fit">
-            <Link href={`/dashboard/groups/${post.groupId}/posts/${post.id}`}>
-              Manage post...
-            </Link>
-          </Button>
-        ) : (
-          <Button asChild className="w-fit" variant={"secondary"}>
-            <Link href={`/dashboard/groups/${post.groupId}/posts/${post.id}`}>
-              Read post...
-            </Link>
-          </Button>
-        )}
+        <div className="flex justify-end">
+          {canDeletePost ? (
+            <Button asChild className="w-full sm:w-fit">
+              <Link href={`/dashboard/groups/${post.groupId}/posts/${post.id}`}>
+                Manage post...
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild className="w-full sm:w-fit" variant={"secondary"}>
+              <Link href={`/dashboard/groups/${post.groupId}/posts/${post.id}`}>
+                Read post...
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

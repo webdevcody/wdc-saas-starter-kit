@@ -10,6 +10,7 @@ import {
   updateReply,
 } from "@/data-access/replies";
 import { createNotification } from "@/data-access/notifications";
+import { PublicError } from "./errors";
 
 export async function getReplyCountUseCase(
   authenticatedUser: UserSession | undefined,
@@ -26,13 +27,13 @@ export async function getRepliesForPostUseCase(
   const post = await getPostById(postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   const hasAccess = await hasAccessToGroup(authenticatedUser, post.groupId);
 
   if (!hasAccess) {
-    throw new Error("User does not have access to this group");
+    throw new PublicError("User does not have access to this group");
   }
 
   const replies = await getRepliesOnPost(postId);
@@ -47,13 +48,13 @@ export async function createReplyUseCase(
   const post = await getPostById(reply.postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   const hasAccess = await hasAccessToGroup(authenticatedUser, post.groupId);
 
   if (!hasAccess) {
-    throw new Error("User does not have access to this group");
+    throw new PublicError("You do not have permission to reply to this post");
   }
 
   const createdReply = await createReply({
@@ -85,13 +86,13 @@ export async function deleteReplyUseCase(
   const replyToDelete = await getReplyById(reply.replyId);
 
   if (!replyToDelete) {
-    throw new Error("Reply not found");
+    throw new PublicError("Reply not found");
   }
 
   const post = await getPostById(replyToDelete.postId);
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new PublicError("Post not found");
   }
 
   const hasAccess = await isAdminOrOwnerOfGroup(
@@ -100,7 +101,7 @@ export async function deleteReplyUseCase(
   );
 
   if (!hasAccess && replyToDelete.userId !== authenticatedUser.id) {
-    throw new Error("User does not have permission to delete this reply");
+    throw new PublicError("User does not have permission to delete this reply");
   }
 
   await deleteReply(reply.replyId);
@@ -119,7 +120,7 @@ export async function updateReplyUseCase(
   );
 
   if (!replyAccess) {
-    throw new Error("User does not have access to this reply");
+    throw new PublicError("User does not have access to this reply");
   }
 
   const updatedReply = await updateReply(reply.replyId, {
