@@ -101,6 +101,15 @@ You'll need to create a subscription product in stripe:
 2. Make your one time product
 3. Copy the price id
 4. paste price id into .env of **PRICE_ID**
+ 
+### Customer Portal
+
+Stripe has a built in way for customers to cancel their subscriptions. You'll need to enable this feature:
+
+1. https://dashboard.stripe.com/settings/billing/portal
+2. Click activate portal link button
+3. Copy your portal link
+4. Paste as env variable as NEXT_PUBLIC_STRIPE_MANAGE_URL
 
 ## HOST_NAME
 
