@@ -82,7 +82,12 @@ Depending on if you are developing locally or deploying to prod, there are two p
 
 ### Local Development
 
-We provided an npm alias `stripe:listen` you can run if you want to setup your locally running application to listsen for any stripe events. Run this command and copy the webhook secret it prints to the console into your .env file.
+1. Install the Stripe CLI:
+For macOS or Linux, you can use Homebrew: `brew install stripe/stripe-cli/stripe`
+- For Windows, you can use the Windows installer from the Stripe CLI GitHub releases page - https://github.com/stripe/stripe-cli/releases
+2. Add Stripe CLI to your PATH:
+Ensure the directory containing the Stripe CLI executable is in your system's PATH environment variable.
+3. We provided an npm alias `stripe:listen` you can run if you want to setup your locally running application to listsen for any stripe events. Run this command and copy the webhook secret it prints to the console into your .env file.
 
 ### Production
 
