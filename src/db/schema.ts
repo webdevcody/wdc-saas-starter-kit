@@ -1,14 +1,14 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
-  timestamp,
-  text,
-  pgEnum,
-  serial,
   boolean,
-  pgTable,
+  index,
   integer,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 export const roleEnum = pgEnum("role", ["member", "admin"]);
 export const accountTypeEnum = pgEnum("type", ["email", "google", "github"]);
@@ -29,14 +29,18 @@ export const accounts = pgTable("gf_accounts", {
   googleId: text("googleId").unique(),
   password: text("password"),
   salt: text("salt"),
-});
+}, (table) => ({
+  userIdAccountTypeIdx: index("user_id_account_type_idx").on(table.userId, table.accountType),
+}));
 
 export const magicLinks = pgTable("gf_magic_links", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   token: text("token"),
   tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-});
+}, (table) => ({
+  tokenIdx: index("magic_links_token_idx").on(table.token),
+}));
 
 export const resetTokens = pgTable("gf_reset_tokens", {
   id: serial("id").primaryKey(),
@@ -46,7 +50,9 @@ export const resetTokens = pgTable("gf_reset_tokens", {
     .unique(),
   token: text("token"),
   tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-});
+}, (table) => ({
+  tokenIdx: index("reset_tokens_token_idx").on(table.token),
+}));
 
 export const verifyEmailTokens = pgTable("gf_verify_email_tokens", {
   id: serial("id").primaryKey(),
@@ -56,7 +62,9 @@ export const verifyEmailTokens = pgTable("gf_verify_email_tokens", {
     .unique(),
   token: text("token"),
   tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-});
+}, (table) => ({
+  tokenIdx: index("verify_email_tokens_token_idx").on(table.token),
+}));
 
 export const profiles = pgTable("gf_profile", {
   id: serial("id").primaryKey(),
@@ -79,7 +87,9 @@ export const sessions = pgTable("gf_session", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
-});
+}, (table) => ({
+  userIdIdx: index("sessions_user_id_idx").on(table.userId),
+}));
 
 export const subscriptions = pgTable("gf_subscriptions", {
   id: serial("id").primaryKey(),
@@ -91,7 +101,9 @@ export const subscriptions = pgTable("gf_subscriptions", {
   stripeCustomerId: text("stripeCustomerId").notNull(),
   stripePriceId: text("stripePriceId").notNull(),
   stripeCurrentPeriodEnd: timestamp("expires", { mode: "date" }).notNull(),
-});
+}, (table) => ({
+  stripeSubscriptionIdIdx: index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
+}));
 
 export const following = pgTable("gf_following", {
   id: serial("id").primaryKey(),
@@ -101,7 +113,9 @@ export const following = pgTable("gf_following", {
   foreignUserId: serial("foreignUserId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-});
+}, (table) => ({
+  userIdForeignUserIdIdx: index("following_user_id_foreign_user_id_idx").on(table.userId, table.foreignUserId),
+}));
 
 /**
  * newsletters - although the emails for the newsletter are tracked in Resend, it's beneficial to also track
@@ -128,7 +142,9 @@ export const groups = pgTable("gf_group", {
   discordLink: text("discordLink").default(""),
   githubLink: text("githubLink").default(""),
   xLink: text("xLink").default(""),
-});
+}, (table) => ({
+  userIdIsPublicIdx: index("groups_user_id_is_public_idx").on(table.userId, table.isPublic),
+}));
 
 export const memberships = pgTable("gf_membership", {
   id: serial("id").primaryKey(),
@@ -139,7 +155,9 @@ export const memberships = pgTable("gf_membership", {
     .notNull()
     .references(() => groups.id, { onDelete: "cascade" }),
   role: roleEnum("role").default("member"),
-});
+}, (table) => ({
+  userIdGroupIdIdx: index("memberships_user_id_group_id_idx").on(table.userId, table.groupId),
+}));
 
 export const invites = pgTable("gf_invites", {
   id: serial("id").primaryKey(),
@@ -204,7 +222,9 @@ export const reply = pgTable("gf_replies", {
     .references(() => groups.id, { onDelete: "cascade" }),
   message: text("message").notNull(),
   createdOn: timestamp("createdOn", { mode: "date" }).notNull(),
-});
+}, (table) => ({
+  postIdIdx: index("replies_post_id_idx").on(table.postId),
+}));
 
 /**
  * RELATIONSHIPS
