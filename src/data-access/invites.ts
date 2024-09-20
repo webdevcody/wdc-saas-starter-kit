@@ -1,3 +1,4 @@
+import { TOKEN_TTL } from "@/app-config";
 import { database } from "@/db";
 import { GroupId, invites } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -13,10 +14,13 @@ export async function deleteInvite(token: string) {
 }
 
 export async function createInvite(groupId: GroupId) {
+  const tokenExpiresAt = new Date(Date.now() + TOKEN_TTL);
+
   const [invite] = await database
     .insert(invites)
     .values({
       groupId,
+      tokenExpiresAt,
     })
     .returning();
   return invite;
