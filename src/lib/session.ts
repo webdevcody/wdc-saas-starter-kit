@@ -33,7 +33,7 @@ export function getSessionToken(): string | undefined {
 
 export const getCurrentUser = cache(async () => {
   const { user } = await validateRequest();
-  return user;
+  return user ?? undefined;
 });
 
 export const assertAuthenticated = async () => {

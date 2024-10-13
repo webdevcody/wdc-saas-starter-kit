@@ -19,52 +19,71 @@ export const users = pgTable("gf_user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
 });
 
-export const accounts = pgTable("gf_accounts", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  accountType: accountTypeEnum("accountType").notNull(),
-  githubId: text("githubId").unique(),
-  googleId: text("googleId").unique(),
-  password: text("password"),
-  salt: text("salt"),
-}, (table) => ({
-  userIdAccountTypeIdx: index("user_id_account_type_idx").on(table.userId, table.accountType),
-}));
+export const accounts = pgTable(
+  "gf_accounts",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    accountType: accountTypeEnum("accountType").notNull(),
+    githubId: text("githubId").unique(),
+    googleId: text("googleId").unique(),
+    password: text("password"),
+    salt: text("salt"),
+  },
+  (table) => ({
+    userIdAccountTypeIdx: index("user_id_account_type_idx").on(
+      table.userId,
+      table.accountType
+    ),
+  })
+);
 
-export const magicLinks = pgTable("gf_magic_links", {
-  id: serial("id").primaryKey(),
-  email: text("email").notNull().unique(),
-  token: text("token"),
-  tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-}, (table) => ({
-  tokenIdx: index("magic_links_token_idx").on(table.token),
-}));
+export const magicLinks = pgTable(
+  "gf_magic_links",
+  {
+    id: serial("id").primaryKey(),
+    email: text("email").notNull().unique(),
+    token: text("token"),
+    tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
+  },
+  (table) => ({
+    tokenIdx: index("magic_links_token_idx").on(table.token),
+  })
+);
 
-export const resetTokens = pgTable("gf_reset_tokens", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" })
-    .unique(),
-  token: text("token"),
-  tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-}, (table) => ({
-  tokenIdx: index("reset_tokens_token_idx").on(table.token),
-}));
+export const resetTokens = pgTable(
+  "gf_reset_tokens",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" })
+      .unique(),
+    token: text("token"),
+    tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
+  },
+  (table) => ({
+    tokenIdx: index("reset_tokens_token_idx").on(table.token),
+  })
+);
 
-export const verifyEmailTokens = pgTable("gf_verify_email_tokens", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" })
-    .unique(),
-  token: text("token"),
-  tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
-}, (table) => ({
-  tokenIdx: index("verify_email_tokens_token_idx").on(table.token),
-}));
+export const verifyEmailTokens = pgTable(
+  "gf_verify_email_tokens",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" })
+      .unique(),
+    token: text("token"),
+    tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
+  },
+  (table) => ({
+    tokenIdx: index("verify_email_tokens_token_idx").on(table.token),
+  })
+);
 
 export const profiles = pgTable("gf_profile", {
   id: serial("id").primaryKey(),
@@ -78,44 +97,61 @@ export const profiles = pgTable("gf_profile", {
   bio: text("bio").notNull().default(""),
 });
 
-export const sessions = pgTable("gf_session", {
-  id: text("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-    mode: "date",
-  }).notNull(),
-}, (table) => ({
-  userIdIdx: index("sessions_user_id_idx").on(table.userId),
-}));
+export const sessions = pgTable(
+  "gf_session",
+  {
+    id: text("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    expiresAt: timestamp("expires_at", {
+      withTimezone: true,
+      mode: "date",
+    }).notNull(),
+  },
+  (table) => ({
+    userIdIdx: index("sessions_user_id_idx").on(table.userId),
+  })
+);
 
-export const subscriptions = pgTable("gf_subscriptions", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" })
-    .unique(),
-  stripeSubscriptionId: text("stripeSubscriptionId").notNull(),
-  stripeCustomerId: text("stripeCustomerId").notNull(),
-  stripePriceId: text("stripePriceId").notNull(),
-  stripeCurrentPeriodEnd: timestamp("expires", { mode: "date" }).notNull(),
-}, (table) => ({
-  stripeSubscriptionIdIdx: index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
-}));
+export const subscriptions = pgTable(
+  "gf_subscriptions",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" })
+      .unique(),
+    stripeSubscriptionId: text("stripeSubscriptionId").notNull(),
+    stripeCustomerId: text("stripeCustomerId").notNull(),
+    stripePriceId: text("stripePriceId").notNull(),
+    stripeCurrentPeriodEnd: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (table) => ({
+    stripeSubscriptionIdIdx: index(
+      "subscriptions_stripe_subscription_id_idx"
+    ).on(table.stripeSubscriptionId),
+  })
+);
 
-export const following = pgTable("gf_following", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  foreignUserId: serial("foreignUserId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-}, (table) => ({
-  userIdForeignUserIdIdx: index("following_user_id_foreign_user_id_idx").on(table.userId, table.foreignUserId),
-}));
+export const following = pgTable(
+  "gf_following",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    foreignUserId: serial("foreignUserId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    userIdForeignUserIdIdx: index("following_user_id_foreign_user_id_idx").on(
+      table.userId,
+      table.foreignUserId
+    ),
+  })
+);
 
 /**
  * newsletters - although the emails for the newsletter are tracked in Resend, it's beneficial to also track
@@ -128,36 +164,50 @@ export const newsletters = pgTable("gf_newsletter", {
   email: text("email").notNull().unique(),
 });
 
-export const groups = pgTable("gf_group", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  isPublic: boolean("isPublic").notNull().default(false),
-  bannerId: text("bannerId"),
-  info: text("info").default(""),
-  youtubeLink: text("youtubeLink").default(""),
-  discordLink: text("discordLink").default(""),
-  githubLink: text("githubLink").default(""),
-  xLink: text("xLink").default(""),
-}, (table) => ({
-  userIdIsPublicIdx: index("groups_user_id_is_public_idx").on(table.userId, table.isPublic),
-}));
+export const groups = pgTable(
+  "gf_group",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description").notNull(),
+    isPublic: boolean("isPublic").notNull().default(false),
+    bannerId: text("bannerId"),
+    info: text("info").default(""),
+    youtubeLink: text("youtubeLink").default(""),
+    discordLink: text("discordLink").default(""),
+    githubLink: text("githubLink").default(""),
+    xLink: text("xLink").default(""),
+  },
+  (table) => ({
+    userIdIsPublicIdx: index("groups_user_id_is_public_idx").on(
+      table.userId,
+      table.isPublic
+    ),
+  })
+);
 
-export const memberships = pgTable("gf_membership", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  groupId: serial("groupId")
-    .notNull()
-    .references(() => groups.id, { onDelete: "cascade" }),
-  role: roleEnum("role").default("member"),
-}, (table) => ({
-  userIdGroupIdIdx: index("memberships_user_id_group_id_idx").on(table.userId, table.groupId),
-}));
+export const memberships = pgTable(
+  "gf_membership",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    groupId: serial("groupId")
+      .notNull()
+      .references(() => groups.id, { onDelete: "cascade" }),
+    role: roleEnum("role").default("member"),
+  },
+  (table) => ({
+    userIdGroupIdIdx: index("memberships_user_id_group_id_idx").on(
+      table.userId,
+      table.groupId
+    ),
+  })
+);
 
 export const invites = pgTable("gf_invites", {
   id: serial("id").primaryKey(),
@@ -165,6 +215,7 @@ export const invites = pgTable("gf_invites", {
     .notNull()
     .default(sql`gen_random_uuid()`)
     .unique(),
+  tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }),
   groupId: serial("groupId")
     .notNull()
     .references(() => groups.id, { onDelete: "cascade" }),
@@ -209,22 +260,26 @@ export const posts = pgTable("gf_posts", {
   createdOn: timestamp("createdOn", { mode: "date" }).notNull(),
 });
 
-export const reply = pgTable("gf_replies", {
-  id: serial("id").primaryKey(),
-  userId: serial("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  postId: serial("postId")
-    .notNull()
-    .references(() => posts.id, { onDelete: "cascade" }),
-  groupId: serial("groupId")
-    .notNull()
-    .references(() => groups.id, { onDelete: "cascade" }),
-  message: text("message").notNull(),
-  createdOn: timestamp("createdOn", { mode: "date" }).notNull(),
-}, (table) => ({
-  postIdIdx: index("replies_post_id_idx").on(table.postId),
-}));
+export const reply = pgTable(
+  "gf_replies",
+  {
+    id: serial("id").primaryKey(),
+    userId: serial("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    postId: serial("postId")
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),
+    groupId: serial("groupId")
+      .notNull()
+      .references(() => groups.id, { onDelete: "cascade" }),
+    message: text("message").notNull(),
+    createdOn: timestamp("createdOn", { mode: "date" }).notNull(),
+  },
+  (table) => ({
+    postIdIdx: index("replies_post_id_idx").on(table.postId),
+  })
+);
 
 /**
  * RELATIONSHIPS
