@@ -1,5 +1,5 @@
 import { ConfigurationPanel } from "@/components/configuration-panel";
-import { LogoutButton } from "./logout-button";
+import { LogoutAllDevicesButton } from "./logout-all-devices-button";
 
 export default async function SecurityPage() {
   return (
@@ -11,7 +11,7 @@ export default async function SecurityPage() {
         </p>
 
         <div className="w-fit">
-          <LogoutButton />
+          <LogoutAllDevicesButton />
         </div>
       </div>
     </ConfigurationPanel>

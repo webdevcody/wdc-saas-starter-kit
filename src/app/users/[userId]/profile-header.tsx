@@ -3,7 +3,6 @@ import { getCurrentUser } from "@/lib/session";
 import { headerStyles, pageTitleStyles } from "@/styles/common";
 import { btnIconStyles, btnStyles } from "@/styles/icons";
 import { getUserProfileUseCase } from "@/use-cases/users";
-import { UserId } from "lucia";
 import { SquareUser } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import { FollowButton } from "./follow-button";
 import { isFollowingUserUseCase } from "@/use-cases/following";
 import { UnfollowButton } from "./unfollow-button";
 import { cn } from "@/lib/utils";
+import { UserId } from "@/use-cases/types";
 
 export async function ProfileHeader({ userId }: { userId: UserId }) {
   const user = await getCurrentUser();

@@ -6,7 +6,7 @@ import { LogOut } from "lucide-react";
 import { useServerAction } from "zsa-react";
 import { invalidateUserSessionsAction } from "./actions";
 
-export function LogoutButton() {
+export function LogoutAllDevicesButton() {
   const { execute, isPending } = useServerAction(invalidateUserSessionsAction);
 
   return (

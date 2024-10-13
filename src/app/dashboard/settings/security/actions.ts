@@ -1,19 +1,14 @@
 "use server";
 
-import { lucia } from "@/auth";
+import { invalidateUserSessions } from "@/auth";
 import { authenticatedAction } from "@/lib/safe-action";
-import { cookies } from "next/headers";
+import { deleteSessionTokenCookie } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export const invalidateUserSessionsAction = authenticatedAction
   .createServerAction()
   .handler(async ({ input, ctx }) => {
-    lucia.invalidateUserSessions(ctx.user.id);
-    const sessionCookie = lucia.createBlankSessionCookie();
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes
-    );
+    await invalidateUserSessions(ctx.user.id);
+    deleteSessionTokenCookie();
     redirect("/sign-in");
   });

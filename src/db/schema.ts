@@ -274,3 +274,5 @@ export type NewReply = typeof reply.$inferInsert;
 export type Following = typeof following.$inferSelect;
 
 export type GroupId = Group["id"];
+
+export type Session = typeof sessions.$inferSelect;
