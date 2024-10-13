@@ -56,13 +56,10 @@ export async function validateRequest(): Promise<SessionValidationResult> {
 export async function validateSessionToken(
   token: string
 ): Promise<SessionValidationResult> {
-  console.log("token", token);
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  console.log("sessionId", sessionId);
   const sessionInDb = await database.query.sessions.findFirst({
     where: eq(sessions.id, sessionId),
   });
-  console.log("sessionInDb", sessionInDb);
   if (!sessionInDb) {
     return { session: null, user: null };
   }
