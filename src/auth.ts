@@ -10,8 +10,9 @@ import { eq } from "drizzle-orm";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { UserId } from "./use-cases/types";
 import { getSessionToken } from "./lib/session";
-const SESSION_REFRESH_PERIOD = 1000 * 60 * 60 * 24 * 15;
-const SESSION_EXTEND_TIME = SESSION_REFRESH_PERIOD * 2;
+
+const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15;
+const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;
 
 export const github = new GitHub(
   env.GITHUB_CLIENT_ID,
@@ -39,7 +40,7 @@ export async function createSession(
   const session: Session = {
     id: sessionId,
     userId,
-    expiresAt: new Date(Date.now() + SESSION_EXTEND_TIME),
+    expiresAt: new Date(Date.now() + SESSION_MAX_DURATION_MS),
   };
   await database.insert(sessions).values(session);
   return session;
@@ -76,8 +77,11 @@ export async function validateSessionToken(
     return { session: null, user: null };
   }
 
-  if (Date.now() >= sessionInDb.expiresAt.getTime() - SESSION_REFRESH_PERIOD) {
-    sessionInDb.expiresAt = new Date(Date.now() + SESSION_EXTEND_TIME);
+  if (
+    Date.now() >=
+    sessionInDb.expiresAt.getTime() - SESSION_REFRESH_INTERVAL_MS
+  ) {
+    sessionInDb.expiresAt = new Date(Date.now() + SESSION_MAX_DURATION_MS);
     await database
       .update(sessions)
       .set({
