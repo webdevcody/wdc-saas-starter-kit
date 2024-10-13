@@ -33,7 +33,7 @@ export function TheProblemSection() {
           </p>
 
           <p className={cn(cellClass, "bg-blue-800")}>
-            3. But how will users register? reading through the lucia-auth docs
+            3. But how will users register? reading through the next-auth docs
             sucks. How do I figure out if someone is authenticated AND
             authorized to see that button? 🫠
           </p>

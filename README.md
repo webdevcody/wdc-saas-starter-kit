@@ -8,7 +8,6 @@ For those wanting more hands on video walkthrough content that explains this cod
 
 Welcome to the WDC Next.js Starter Kit! This is a github template which contains the following technology we feel is a great starting point for any new SaaS product:
 
-- Authentication (Lucia)
 - Authorization
 - Subscription Management (Stripe)
 - Stripe Integration / Webhooks
@@ -107,8 +106,6 @@ You'll need to create a subscription product in stripe:
 When deplying to production, you want to set HOST_NAME to your FQDN, such as `https://you-domain.com`
 
 ## Auth Setup
-
-TODO: link to lucia auth, talk about it
 
 ### Google Provider
 

@@ -5,11 +5,8 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import { UserId } from "@/use-cases/types";
 
-export function setSessionTokenCookie(
-  sessionId: string,
-  expiresAt: Date
-): void {
-  cookies().set("session", sessionId, {
+export function setSessionTokenCookie(token: string, expiresAt: Date): void {
+  cookies().set("session", token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -48,5 +45,5 @@ export const assertAuthenticated = async () => {
 export async function setSession(userId: UserId) {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
-  setSessionTokenCookie(session.id, session.expiresAt);
+  setSessionTokenCookie(token, session.expiresAt);
 }
