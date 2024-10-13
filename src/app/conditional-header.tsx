@@ -19,7 +19,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { applicationName } from "@/app-config";
 import { Button } from "@/components/ui/button";
-import { Session } from "lucia";
+import { type Session } from "@/db/schema";
 
 export function ConditionalHeader({
   session,

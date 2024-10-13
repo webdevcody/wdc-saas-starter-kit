@@ -98,7 +98,7 @@ export function ComingSoon() {
             <li>🌑 ShadCN</li>
             <li>🌈 Tailwind CSS</li>
             <li>📝 Typescript</li>
-            <li>🔒 Authentication (Lucia-Auth) </li>
+            <li>🔒 Authentication (Artic and Oslo) </li>
             <li>🌐 Google & Github Login </li>
             <li>🔗 Magic Link Login </li>
             <li>👥 Role Based Authorization </li>

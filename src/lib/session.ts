@@ -1,16 +1,39 @@
 import "server-only";
 import { AuthenticationError } from "@/app/util";
-import { lucia, validateRequest } from "@/auth";
+import { createSession, generateSessionToken, validateRequest } from "@/auth";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { UserId } from "lucia";
+import { UserId } from "@/use-cases/types";
+
+const SESSION_COOKIE_NAME = "session";
+
+export function setSessionTokenCookie(token: string, expiresAt: Date): void {
+  cookies().set(SESSION_COOKIE_NAME, token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    expires: expiresAt,
+    path: "/",
+  });
+}
+
+export function deleteSessionTokenCookie(): void {
+  cookies().set(SESSION_COOKIE_NAME, "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 0,
+    path: "/",
+  });
+}
+
+export function getSessionToken(): string | undefined {
+  return cookies().get(SESSION_COOKIE_NAME)?.value;
+}
 
 export const getCurrentUser = cache(async () => {
-  const session = await validateRequest();
-  if (!session.user) {
-    return undefined;
-  }
-  return session.user;
+  const { user } = await validateRequest();
+  return user;
 });
 
 export const assertAuthenticated = async () => {
@@ -22,11 +45,7 @@ export const assertAuthenticated = async () => {
 };
 
 export async function setSession(userId: UserId) {
-  const session = await lucia.createSession(userId, {});
-  const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes
-  );
+  const token = generateSessionToken();
+  const session = await createSession(token, userId);
+  setSessionTokenCookie(token, session.expiresAt);
 }

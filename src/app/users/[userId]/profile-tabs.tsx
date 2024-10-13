@@ -1,9 +1,8 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
 import { tabStyles } from "@/styles/common";
-import { UserId } from "lucia";
+import { UserId } from "@/use-cases/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
