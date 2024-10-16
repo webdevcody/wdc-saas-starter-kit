@@ -34,7 +34,7 @@ export async function acceptInviteUseCase(
     throw new PublicError("This invite does not exist or has expired");
   }
 
-  if (invite.tokenExpiresAt! < new Date()) {
+  if (invite.tokenExpiresAt < new Date()) {
     throw new PublicError("This invite has expired");
   }
 

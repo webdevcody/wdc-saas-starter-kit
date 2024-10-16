@@ -219,6 +219,7 @@ export const invites = pgTable("gf_invites", {
   groupId: serial("groupId")
     .notNull()
     .references(() => groups.id, { onDelete: "cascade" }),
+  tokenExpiresAt: timestamp("tokenExpiresAt", { mode: "date" }).notNull(),
 });
 
 export const events = pgTable("gf_events", {
