@@ -1,5 +1,11 @@
 Notice! this starter kit isn't fully finished, but I'm just making this public for now if anyone wants to add onto it. I'm getting burned out on working on this so I'm open to anyone wanting to help contribute to fixing up any bugs they find, etc.
 
+# Discord
+
+You can join the discord if you want to talk about the code here or suggest features / etc.
+
+[https://discord.gg/N2uEyp7Rfu](https://discord.gg/N2uEyp7Rfu)
+
 # Code Walkthrough (Early Access)
 
 For those wanting more hands on video walkthrough content that explains this code base, shows how to deploy it, and how to maintain it in production, I'm working on a paid video walkthrough series found here [https://webdevcody.gumroad.com/l/wdc-saas-starter-kit-walkthrough](https://webdevcody.gumroad.com/l/wdc-saas-starter-kit-walkthrough). I'm in the process of recording and editing videos, but if you purchase now it's 50% off the original pricing.
@@ -82,10 +88,12 @@ Depending on if you are developing locally or deploying to prod, there are two p
 ### Local Development
 
 1. Install the Stripe CLI:
-For macOS or Linux, you can use Homebrew: `brew install stripe/stripe-cli/stripe`
+   For macOS or Linux, you can use Homebrew: `brew install stripe/stripe-cli/stripe`
+
 - For Windows, you can use the Windows installer from the Stripe CLI GitHub releases page - https://github.com/stripe/stripe-cli/releases
+
 2. Add Stripe CLI to your PATH:
-Ensure the directory containing the Stripe CLI executable is in your system's PATH environment variable.
+   Ensure the directory containing the Stripe CLI executable is in your system's PATH environment variable.
 3. We provided an npm alias `stripe:listen` you can run if you want to setup your locally running application to listsen for any stripe events. Run this command and copy the webhook secret it prints to the console into your .env file.
 
 ### Production
@@ -105,7 +113,7 @@ You'll need to create a subscription product in stripe:
 2. Make your one time product
 3. Copy the price id
 4. paste price id into .env of **PRICE_ID**
- 
+
 ### Customer Portal
 
 Stripe has a built in way for customers to cancel their subscriptions. You'll need to enable this feature:
