@@ -1,0 +1,1 @@
+ALTER TABLE "gf_invites" ALTER COLUMN "tokenExpiresAt" SET NOT NULL;
