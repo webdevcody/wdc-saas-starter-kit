@@ -3,34 +3,7 @@ import { accounts } from "@/db/schema";
 import { UserId } from "@/use-cases/types";
 import { and, eq } from "drizzle-orm";
 import crypto from "crypto";
-
-const ITERATIONS = 10000;
-
-async function hashPassword(plainTextPassword: string, salt: string) {
-  return new Promise<string>((resolve, reject) => {
-    crypto.pbkdf2(
-      plainTextPassword,
-      salt,
-      ITERATIONS,
-      64,
-      "sha512",
-      (err, derivedKey) => {
-        if (err) reject(err);
-        resolve(derivedKey.toString("hex"));
-      }
-    );
-  });
-}
-
-// export async function createAccount(user: User) {
-//   await database.insert(accounts).values({
-//     providerId: "email",
-//     providerAccountId: "email",
-//     type: "email",
-//     userId: user.id,
-//     access_token: "",
-//   });
-// }
+import { hashPassword } from "./utils";
 
 export async function createAccount(userId: UserId, password: string) {
   const salt = crypto.randomBytes(128).toString("base64");

@@ -4,8 +4,7 @@ import { eq } from "drizzle-orm";
 import crypto from "crypto";
 import { UserId } from "@/use-cases/types";
 import { getAccountByUserId } from "@/data-access/accounts";
-
-const ITERATIONS = 10000;
+import { hashPassword } from "./utils";
 
 export async function deleteUser(userId: UserId) {
   await database.delete(users).where(eq(users.id, userId));
@@ -17,22 +16,6 @@ export async function getUser(userId: UserId) {
   });
 
   return user;
-}
-
-async function hashPassword(plainTextPassword: string, salt: string) {
-  return new Promise<string>((resolve, reject) => {
-    crypto.pbkdf2(
-      plainTextPassword,
-      salt,
-      ITERATIONS,
-      64,
-      "sha512",
-      (err, derivedKey) => {
-        if (err) reject(err);
-        resolve(derivedKey.toString("hex"));
-      }
-    );
-  });
 }
 
 export async function createUser(email: string) {
