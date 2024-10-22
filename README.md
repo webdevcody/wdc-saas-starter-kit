@@ -144,8 +144,8 @@ By default, this starter only comes with the google provider which you'll need t
 
 6. Authorized redirect URIs
 
-- http://localhost:3000/api/auth/callback/google
-- https://your-domain.com/api/auth/callback/google
+- http://localhost:3000/api/login/google/callback
+- https://your-domain.com/api/login/google/callback
 
 7. Set your google id and secret inside of .env
 
