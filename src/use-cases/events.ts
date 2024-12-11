@@ -22,7 +22,7 @@ import { createUUID } from "@/util/uuid";
 import { uploadFileToBucket } from "@/lib/files";
 import { getGroupImageKey } from "./files";
 import { createNotification } from "@/data-access/notifications";
-import { NotFoundError } from "@/app/util";
+import { NotFoundError } from "@/app/(main)/util";
 import { PublicError } from "./errors";
 
 export async function getEventsUseCase(

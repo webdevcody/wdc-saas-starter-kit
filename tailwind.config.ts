@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
+import { createPreset } from "fumadocs-ui/tailwind-plugin";
 
 const config = {
   darkMode: ["class"],
@@ -8,8 +8,11 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/fumadocs-ui/dist/**/*.js",
+    "./content/**/*.mdx",
   ],
   prefix: "",
+  presets: [createPreset()],
   theme: {
     container: {
       center: true,

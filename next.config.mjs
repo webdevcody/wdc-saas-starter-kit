@@ -1,14 +1,12 @@
-import createNextDocsMDX from "fumadocs-mdx/config";
+import { createMDX } from "fumadocs-mdx/next";
 
-const withMDX = createNextDocsMDX();
+const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
-  experimental: {
-    serverComponentsExternalPackages: ["@aws-sdk/s3-request-presigner"],
-  },
+  serverExternalPackages: ["@aws-sdk/s3-request-presigner"],
   images: {
     remotePatterns: [
       {

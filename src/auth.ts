@@ -16,7 +16,8 @@ const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;
 
 export const github = new GitHub(
   env.GITHUB_CLIENT_ID,
-  env.GITHUB_CLIENT_SECRET
+  env.GITHUB_CLIENT_SECRET,
+  `${env.HOST_NAME}/api/login/github/callback`
 );
 
 export const googleAuth = new Google(
@@ -47,7 +48,7 @@ export async function createSession(
 }
 
 export async function validateRequest(): Promise<SessionValidationResult> {
-  const sessionToken = getSessionToken();
+  const sessionToken = await getSessionToken();
   if (!sessionToken) {
     return { session: null, user: null };
   }
