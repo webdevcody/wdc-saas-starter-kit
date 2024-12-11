@@ -11,7 +11,7 @@ import {
   updatePost,
 } from "@/data-access/posts";
 import { isAdminOrOwnerOfGroup } from "./authorization";
-import { AuthenticationError } from "@/app/util";
+import { AuthenticationError } from "@/app/(main)/util";
 import { PublicError } from "./errors";
 
 // TODO: clean up this function

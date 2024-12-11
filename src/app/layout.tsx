@@ -1,16 +1,12 @@
 import "@/app/globals.css";
-import "fumadocs-ui/style.css";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { ReactNode, Suspense } from "react";
 import { Providers } from "@/providers/providers";
-import { Footer } from "@/components/footer";
 import { applicationName, appConfig } from "@/app-config";
 import PostHogPageView from "@/components/posthog-page-view";
-import { ComingSoonFooter } from "@/app/(coming-soon)/footer";
-import { Header } from "@/app/_header/header";
 
 import { Archivo } from "next/font/google";
 import { Libre_Franklin } from "next/font/google";
@@ -78,15 +74,7 @@ export default async function RootLayout({
             <PostHogPageView />
           </Suspense>
           <NextTopLoader />
-          <div className="flex flex-col w-full">
-            {appConfig.mode === "live" && <Header />}
-            <div>{children}</div>
-            {appConfig.mode === "comingSoon" ? (
-              <ComingSoonFooter />
-            ) : (
-              <Footer />
-            )}
-          </div>
+          <div>{children}</div>
         </Providers>
         <Toaster />
         <BreakpointOverlay />

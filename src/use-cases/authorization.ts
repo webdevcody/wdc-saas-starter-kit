@@ -1,4 +1,4 @@
-import { AuthenticationError, NotFoundError } from "@/app/util";
+import { AuthenticationError, NotFoundError } from "@/app/(main)/util";
 import { getEvent } from "@/data-access/events";
 import { getGroupById } from "@/data-access/groups";
 import { getMembership } from "@/data-access/membership";

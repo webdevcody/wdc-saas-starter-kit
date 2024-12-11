@@ -6,7 +6,7 @@ import {
   updateNotification,
 } from "@/data-access/notifications";
 import { UserSession } from "./types";
-import { AuthenticationError, NotFoundError } from "@/app/util";
+import { AuthenticationError, NotFoundError } from "@/app/(main)/util";
 
 export async function assertOwnsNotification(
   authenticatedUser: UserSession,

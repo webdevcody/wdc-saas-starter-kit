@@ -1,14 +1,12 @@
-// import createNextDocsMDX from "fumadocs-mdx/config";
+import { createMDX } from "fumadocs-mdx/next";
 
-// const withMDX = createNextDocsMDX();
+const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
-  experimental: {
-    serverComponentsExternalPackages: ["@aws-sdk/s3-request-presigner"],
-  },
+  serverExternalPackages: ["@aws-sdk/s3-request-presigner"],
   images: {
     remotePatterns: [
       {
@@ -29,9 +27,14 @@ const nextConfig = {
         port: "",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "accounts.google.com",
+        port: "",
+        pathname: "**",
+      },
     ],
   },
 };
 
-// export default withMDX(nextConfig);
-export default nextConfig;
+export default withMDX(nextConfig);
