@@ -9,11 +9,11 @@ import { redirect } from "next/navigation";
 export default async function InvitesPage({
   params,
 }: {
-  params: {
+  params: Promise<{
     token: string;
-  };
+  }>;
 }) {
-  const { token } = params;
+  const { token } = await params;
 
   if (!token) {
     throw new Error("Invalid invite link");

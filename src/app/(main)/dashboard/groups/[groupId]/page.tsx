@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
 
-export default function GroupPage(props: { params: { groupId: string } }) {
-  redirect(`/dashboard/groups/${props.params.groupId}/info`);
+export default async function GroupPage(props: {
+  params: Promise<{ groupId: string }>;
+}) {
+  const { groupId } = await props.params;
+  redirect(`/dashboard/groups/${groupId}/info`);
 }

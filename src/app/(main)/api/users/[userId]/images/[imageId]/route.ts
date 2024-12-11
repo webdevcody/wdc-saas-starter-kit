@@ -5,12 +5,11 @@ import { NextResponse } from "next/server";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { userId: string; imageId: string } }
+  { params }: { params: Promise<{ userId: string; imageId: string }> }
 ) => {
+  const { userId, imageId } = await params;
   try {
-    const userId = params.userId;
-
-    if (!params.imageId) {
+    if (!imageId) {
       return NextResponse.json(
         { error: "Image ID is required" },
         { status: 400 }
@@ -18,11 +17,11 @@ export const GET = async (
     }
 
     const url =
-      params.imageId === "default"
+      imageId === "default"
         ? `${env.HOST_NAME}/group.jpeg`
         : await getProfileImageUrlUseCase({
             userId: parseInt(userId),
-            imageId: params.imageId,
+            imageId: imageId,
           });
 
     return streamImageFromUrl(url);

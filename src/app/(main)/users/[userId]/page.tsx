@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 export default async function ProfilePage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  redirect(`/users/${params.userId}/info`);
+  const { userId } = await params;
+  redirect(`/users/${userId}/info`);
 }

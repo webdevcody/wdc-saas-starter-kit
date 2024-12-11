@@ -23,10 +23,11 @@ function FollowerCard({ profile }: { profile: Profile }) {
 export default async function FollowersPage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const userId = parseInt(params.userId);
-  const followers = await getFollowersForUserUseCase(userId);
+  const { userId } = await params;
+  const userIdInt = parseInt(userId);
+  const followers = await getFollowersForUserUseCase(userIdInt);
 
   return (
     <div className="space-y-8">

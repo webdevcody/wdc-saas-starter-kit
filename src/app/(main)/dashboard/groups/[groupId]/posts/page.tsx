@@ -15,12 +15,12 @@ import { cn } from "@/lib/utils";
 export default async function PostsPage({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
-  const { groupId } = params;
-
+  const { groupId } = await params;
+  const groupIdInt = parseInt(groupId);
   const user = await getCurrentUser();
-  const canPost = await isUserMemberOfGroupUseCase(user, parseInt(groupId));
+  const canPost = await isUserMemberOfGroupUseCase(user, groupIdInt);
 
   return (
     <div className="flex flex-col gap-8">

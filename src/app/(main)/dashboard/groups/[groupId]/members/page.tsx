@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { cardStyles, pageTitleStyles } from "@/styles/common";
 import { getGroupMembersUseCase } from "@/use-cases/groups";
 import { isGroupOwnerUseCase } from "@/use-cases/membership";
-import { Role, UserId } from "@/use-cases/types";
+import { UserId } from "@/use-cases/types";
 import Link from "next/link";
 import { InviteButton } from "../invite-button";
 import { Crown, Gavel, Users } from "lucide-react";
@@ -55,17 +55,20 @@ function MemberCard({
 export default async function MembersPage({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
+  const { groupId } = await params;
   const user = await getCurrentUser();
-  const groupId = parseInt(params.groupId);
-  const members = await getGroupMembersUseCase(user, groupId);
+  const groupIdInt = parseInt(groupId);
+  const members = await getGroupMembersUseCase(user, groupIdInt);
 
   const owners = members.filter((member) => member.role === "owner");
   const admins = members.filter((member) => member.role === "admin");
   const regularMembers = members.filter((member) => member.role === "member");
 
-  const isGroupOwner = !user ? false : await isGroupOwnerUseCase(user, groupId);
+  const isGroupOwner = !user
+    ? false
+    : await isGroupOwnerUseCase(user, groupIdInt);
 
   return (
     <div className="space-y-8">
@@ -81,7 +84,7 @@ export default async function MembersPage({
         {owners.map((member) => (
           <MemberCard
             showActions={false}
-            groupId={groupId}
+            groupId={groupIdInt}
             key={member.userId}
             member={member}
           />
@@ -96,7 +99,7 @@ export default async function MembersPage({
           <div className="flex flex-wrap gap-4">
             {admins.map((member) => (
               <MemberCard
-                groupId={groupId}
+                groupId={groupIdInt}
                 showActions={isGroupOwner}
                 key={member.userId}
                 member={member}
@@ -114,7 +117,7 @@ export default async function MembersPage({
           <div className="flex flex-wrap gap-4">
             {regularMembers.map((member) => (
               <MemberCard
-                groupId={groupId}
+                groupId={groupIdInt}
                 showActions={isGroupOwner}
                 key={member.userId}
                 member={member}

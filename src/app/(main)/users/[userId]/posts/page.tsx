@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils";
 export default async function PostsContent({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const { userId } = params;
-  const posts = await getPublicPostsByUserUseCase(parseInt(userId));
+  const { userId } = await params;
+  const userIdInt = parseInt(userId);
+  const posts = await getPublicPostsByUserUseCase(userIdInt);
 
   return (
     <div className="space-y-12">

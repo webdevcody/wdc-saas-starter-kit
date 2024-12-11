@@ -25,13 +25,15 @@ import { ReplyActions } from "./reply-actions";
 export default async function PostPage({
   params,
 }: {
-  params: { postId: string; groupId: string };
+  params: Promise<{ postId: string; groupId: string }>;
 }) {
-  const { postId, groupId } = params;
+  const { postId, groupId } = await params;
 
   const user = await getCurrentUser();
-  const post = await getPostByIdUseCase(user, parseInt(postId));
-  const isPostAdmin = await canEditPostUseCase(user, parseInt(postId));
+  const postIdInt = parseInt(postId);
+  const groupIdInt = parseInt(groupId);
+  const post = await getPostByIdUseCase(user, postIdInt);
+  const isPostAdmin = await canEditPostUseCase(user, postIdInt);
 
   return (
     <div className="flex flex-col gap-8">
@@ -54,7 +56,7 @@ export default async function PostPage({
       </h2>
 
       <Suspense>
-        <RepliesList groupId={parseInt(groupId)} postId={post.id} />
+        <RepliesList groupId={groupIdInt} postId={postIdInt} />
       </Suspense>
     </div>
   );

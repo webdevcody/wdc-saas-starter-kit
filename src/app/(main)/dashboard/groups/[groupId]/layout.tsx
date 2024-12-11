@@ -15,11 +15,13 @@ export default async function GroupLayout({
   params,
 }: {
   children: ReactNode;
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
+  const { groupId } = await params;
+  const groupIdInt = parseInt(groupId);
   const user = await getCurrentUser();
 
-  const group = await getPublicGroupInfoByIdUseCase(parseInt(params.groupId));
+  const group = await getPublicGroupInfoByIdUseCase(groupIdInt);
 
   if (!group) {
     throw new NotFoundError("Group not found.");
@@ -40,7 +42,7 @@ export default async function GroupLayout({
     <div>
       <GroupHeader group={group} />
 
-      <TabsSection groupId={params.groupId} showSettings={isGroupOwner} />
+      <TabsSection groupId={groupId} showSettings={isGroupOwner} />
 
       <div className={pageWrapperStyles}>{children}</div>
     </div>

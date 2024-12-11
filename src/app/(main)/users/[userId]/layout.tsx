@@ -8,11 +8,10 @@ export default async function ProfileLayout({
   params,
   children,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
   children: ReactNode;
 }) {
-  const { userId } = params;
-  console.log(params.userId);
+  const { userId } = await params;
 
   return (
     <>

@@ -13,10 +13,12 @@ import { SocialLinksForm } from "./social-links-form";
 export default async function Settings({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
+  const { groupId } = await params;
   const user = await assertAuthenticated();
-  const group = await getGroupByIdUseCase(user, parseInt(params.groupId));
+  const groupIdInt = parseInt(groupId);
+  const group = await getGroupByIdUseCase(user, groupIdInt);
 
   if (!group) {
     return <div>Group not found</div>;

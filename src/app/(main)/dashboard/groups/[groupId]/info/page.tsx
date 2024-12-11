@@ -21,9 +21,9 @@ import { cn } from "@/lib/utils";
 export default async function InfoPage({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
-  const { groupId } = params;
+  const { groupId } = await params;
 
   const user = await getCurrentUser();
 

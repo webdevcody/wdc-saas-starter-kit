@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 export default async function InfoContent({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const { userId } = params;
-
-  const profile = await getUserProfileUseCase(parseInt(userId));
+  const { userId } = await params;
+  const userIdInt = parseInt(userId);
+  const profile = await getUserProfileUseCase(userIdInt);
 
   return (
     <div>

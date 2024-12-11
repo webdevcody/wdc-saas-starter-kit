@@ -5,10 +5,11 @@ import Image from "next/image";
 export default async function GroupsContent({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const { userId } = params;
-  const userGroups = await getPublicGroupsByUserIdUseCase(parseInt(userId));
+  const { userId } = await params;
+  const userIdInt = parseInt(userId);
+  const userGroups = await getPublicGroupsByUserIdUseCase(userIdInt);
 
   return (
     <div className="space-y-8">

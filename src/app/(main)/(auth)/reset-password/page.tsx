@@ -34,16 +34,17 @@ const registrationSchema = z
     path: ["passwordConfirmation"],
   });
 
-export default function ResetPasswordPage({
+export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: { token: string };
+  searchParams: Promise<{ token: string }>;
 }) {
+  const { token } = await searchParams;
   const form = useForm<z.infer<typeof registrationSchema>>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       password: "",
-      token: searchParams.token,
+      token,
       passwordConfirmation: "",
     },
   });

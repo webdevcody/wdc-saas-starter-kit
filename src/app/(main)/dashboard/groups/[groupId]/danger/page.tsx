@@ -7,10 +7,12 @@ import { DeleteGroupButton } from "./delete-group-button";
 export default async function DangerTab({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
+  const { groupId } = await params;
+  const groupIdInt = parseInt(groupId);
   const user = await assertAuthenticated();
-  const group = await getGroupByIdUseCase(user, parseInt(params.groupId));
+  const group = await getGroupByIdUseCase(user, groupIdInt);
 
   if (!group) {
     return <div>Group not found</div>;

@@ -11,13 +11,14 @@ import { isGroupOwnerUseCase } from "@/use-cases/membership";
 export default async function MembersPage({
   params,
 }: {
-  params: { groupId: string };
+  params: Promise<{ groupId: string }>;
 }) {
+  const { groupId } = await params;
+  const groupIdInt = parseInt(groupId);
   const user = await getCurrentUser();
-  const groupId = parseInt(params.groupId);
 
-  const events = await getEventsUseCase(user, groupId);
-  const isGroupOwner = await isGroupOwnerUseCase(user, groupId);
+  const events = await getEventsUseCase(user, groupIdInt);
+  const isGroupOwner = await isGroupOwnerUseCase(user, groupIdInt);
 
   const upcomingEvents = events.filter((event) => {
     return new Date(event.startsOn) > new Date();
