@@ -12,7 +12,7 @@ export async function setSessionTokenCookie(
   expiresAt: Date
 ): Promise<void> {
   const allCookies = await cookies();
-  await allCookies.set(SESSION_COOKIE_NAME, token, {
+  allCookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -23,7 +23,7 @@ export async function setSessionTokenCookie(
 
 export async function deleteSessionTokenCookie(): Promise<void> {
   const allCookies = await cookies();
-  await allCookies.set(SESSION_COOKIE_NAME, "", {
+  allCookies.set(SESSION_COOKIE_NAME, "", {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -54,5 +54,5 @@ export const assertAuthenticated = async () => {
 export async function setSession(userId: UserId) {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
-  setSessionTokenCookie(token, session.expiresAt);
+  await setSessionTokenCookie(token, session.expiresAt);
 }
