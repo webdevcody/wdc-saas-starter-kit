@@ -54,5 +54,5 @@ export const assertAuthenticated = async () => {
 export async function setSession(userId: UserId) {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
-  setSessionTokenCookie(token, session.expiresAt);
+  await setSessionTokenCookie(token, session.expiresAt);
 }
