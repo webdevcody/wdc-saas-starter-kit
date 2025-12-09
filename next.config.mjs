@@ -7,6 +7,7 @@ const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
   serverExternalPackages: ["@aws-sdk/s3-request-presigner"],
+  transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
   images: {
     remotePatterns: [
       {
