@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
+import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
@@ -7,6 +8,7 @@ import { ReactNode, Suspense } from "react";
 import { Providers } from "@/providers/providers";
 import { applicationName, appConfig } from "@/app-config";
 import PostHogPageView from "@/components/posthog-page-view";
+import { env } from "@/env";
 
 import { Archivo } from "next/font/google";
 import { Libre_Franklin } from "next/font/google";
@@ -78,6 +80,13 @@ export default async function RootLayout({
         </Providers>
         <Toaster />
         <BreakpointOverlay />
+        {env.NEXT_PUBLIC_GIZMO_KEY ? (
+          <Script
+            src="https://gizmoanalytics.io/script.js"
+            data-key={env.NEXT_PUBLIC_GIZMO_KEY}
+            strategy="afterInteractive"
+          />
+        ) : null}
       </body>
     </html>
   );

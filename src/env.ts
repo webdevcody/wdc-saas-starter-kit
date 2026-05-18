@@ -30,6 +30,9 @@ export const env = createEnv({
     NEXT_PUBLIC_PRICE_ID_BASIC: z.string().min(1),
     NEXT_PUBLIC_PRICE_ID_PREMIUM: z.string().min(1),
     NEXT_PUBLIC_STRIPE_MANAGE_URL: z.string().min(1),
+    // Optional: public key for Gizmo Analytics (cookieless web analytics).
+    // Leave unset to disable — layout's <Script> tag is gated on this.
+    NEXT_PUBLIC_GIZMO_KEY: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -57,5 +60,6 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NEXT_PUBLIC_STRIPE_MANAGE_URL: process.env.NEXT_PUBLIC_STRIPE_MANAGE_URL,
+    NEXT_PUBLIC_GIZMO_KEY: process.env.NEXT_PUBLIC_GIZMO_KEY,
   },
 });
