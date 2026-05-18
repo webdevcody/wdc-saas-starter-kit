@@ -32,7 +32,9 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_MANAGE_URL: z.string().min(1),
     // Optional: public key for Gizmo Analytics (cookieless web analytics).
     // Leave unset to disable — layout's <Script> tag is gated on this.
-    NEXT_PUBLIC_GIZMO_KEY: z.string().optional(),
+    // min(1) so an empty string is rejected (otherwise we'd render
+    // <Script data-key="" /> which is semantically broken).
+    NEXT_PUBLIC_GIZMO_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
