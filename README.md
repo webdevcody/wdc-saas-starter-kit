@@ -59,6 +59,10 @@ Setup your domain in resend so that you can send emails from your custom domain 
 
 TODO: add info about bucket and keys
 
+## Webhook concurrency test
+
+Stripe can deliver webhook events late, twice, or out of order. `npm run test:race` runs the Stripe webhook's database writes in every possible order on a real Postgres with [VibeRaven](https://viberaven.dev) (`npx -y viberaven race`) and fails if any order breaks the rule in `race/webhook.race.json`. It also runs in `npm test`. Add a rule there when you add a webhook handler.
+
 ## Database
 
 This starter kit uses postgres. Supabase provides 2 free postgres database. Setup a database and get your **DATABASE_URL**.
