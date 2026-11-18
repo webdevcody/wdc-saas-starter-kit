@@ -1,0 +1,21 @@
+{
+  "rule": "An older customer.subscription.updated (period end 2026-01-01) must not roll back the period end set by the newer one (2026-02-01)",
+  "setup": "INSERT INTO gf_subscriptions(id,stripe_subscription_id,expires) VALUES (1,'sub_1','2025-12-01')",
+  "invariant": "SELECT expires <> '2026-01-01' FROM gf_subscriptions WHERE id=1",
+  "isolation": [
+    "read committed"
+  ],
+  "notes": "SQL transliteration of the webhook handler; covers bounded SQL orders only, not HTTP or Stripe.",
+  "requests": [
+    {
+      "statements": [
+        "UPDATE gf_subscriptions SET expires='2026-01-01' WHERE stripe_subscription_id='sub_1' AND expires <= '2026-01-01'"
+      ]
+    },
+    {
+      "statements": [
+        "UPDATE gf_subscriptions SET expires='2026-02-01' WHERE stripe_subscription_id='sub_1' AND expires <= '2026-02-01'"
+      ]
+    }
+  ]
+}

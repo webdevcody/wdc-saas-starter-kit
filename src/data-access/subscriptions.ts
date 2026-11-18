@@ -1,7 +1,7 @@
 import { database } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { UserId } from "@/use-cases/types";
-import { eq } from "drizzle-orm";
+import { and, eq, lte } from "drizzle-orm";
 
 export async function createSubscription(subscription: {
   userId: UserId;
@@ -25,7 +25,18 @@ export async function updateSubscription(subscription: {
       stripeCurrentPeriodEnd: subscription.stripeCurrentPeriodEnd,
     })
     .where(
-      eq(subscriptions.stripeSubscriptionId, subscription.stripeSubscriptionId)
+      and(
+        eq(
+          subscriptions.stripeSubscriptionId,
+          subscription.stripeSubscriptionId
+        ),
+        // Stripe can deliver events out of order: an older event must not
+        // roll back a period end that a newer event already set.
+        lte(
+          subscriptions.stripeCurrentPeriodEnd,
+          subscription.stripeCurrentPeriodEnd
+        )
+      )
     );
 }
 
